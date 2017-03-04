@@ -1,0 +1,20 @@
+{
+	"manifest_version": 2,
+
+	"name":"Alexa Search",
+	"version":"1.0",
+
+	"description" : "Search with Amazon Alexa",
+	"browser_action":{
+		"default_title" : "Hi, Alexa!",
+		"default_icon": "icon.png"
+	},
+	"background": {
+		"scripts":["background.js"]
+	},
+	"permissions":[
+		"http://*/*", 
+		"http://*/*", 
+		"tabs"
+	]
+}
