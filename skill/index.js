@@ -14,7 +14,7 @@ const Alexa = require('alexa-sdk');
 const actions = require('./recipes');
 const request = require('request');
 const http = require('http');
-const baseUrl = "http://requestb.in/135lfxl1";
+const baseUrl = "http://alexachrome.scalingo.io/";
 
 const APP_ID = 'amzn1.ask.skill.f22034b7-53d6-4553-ae43-fc8f6963408c' // TODO replace with your app ID (OPTIONAL).
 
