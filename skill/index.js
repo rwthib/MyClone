@@ -13,7 +13,7 @@
 const Alexa = require('alexa-sdk');
 const actions = require('./recipes');
 
-const APP_ID = amzn1.ask.skill.f22034b7-53d6-4553-ae43-fc8f6963408c // TODO replace with your app ID (OPTIONAL).
+const APP_ID = 'amzn1.ask.skill.f22034b7-53d6-4553-ae43-fc8f6963408c' // TODO replace with your app ID (OPTIONAL).
 
 const handlers = {
     'NewSession': function () {
@@ -76,7 +76,7 @@ const handlers = {
 const languageStrings = {
     'en': {
         translation: {
-            ACTIONS: actions.ACTIONS_EN,
+            ACTIONS: actions.RECIPES_EN_GB,
             SKILL_NAME: 'Browser Navigator',
             WELCOME_MESSAGE: "Welcome to %s. You can control your browser via actions like, navigate back, visit facebook ... Now, what can I help you with.",
             WELCOME_REPROMT: 'For instructions on what you can say, please say help me.',
