@@ -23,7 +23,7 @@ const handlers = {
         this.attributes.speechOutput = this.t('WELCOME_MESSAGE', this.t('SKILL_NAME'));
         // If the user either does not reply to the welcome message or says something that is not
         // understood, they will be prompted again with this text.
-        this.attributes.repromptSpeech = this.t('WELCOME_REPROMT');
+        this.attributes.repromptSpeech = this.t('WELCOME_REPROMPT');
         this.emit(':ask', this.attributes.speechOutput, this.attributes.repromptSpeech);
     },
     'Unhandled': function () {
@@ -65,7 +65,8 @@ const handlers = {
                     this.emit(':tell', 'error during request');
                 }
                 else {
-                    this.emit(':tell', 'success');
+                    this.attributes.repromptSpeech = this.t('REPROMPT_AGAIN');
+                    this.emit(':ask', action, this.attributes.repromptSpeech);
                 }
             });
 
@@ -109,8 +110,9 @@ const languageStrings = {
         translation: {
             ACTIONS: actions.ACTIONS_EN_GB,
             SKILL_NAME: 'Browser Navigator',
-            WELCOME_MESSAGE: "Welcome to %s. You can control your browser via actions like, navigate back, visit facebook ... Now, what can I help you with.",
-            WELCOME_REPROMT: 'For instructions on what you can say, please say help me.',
+            WELCOME_MESSAGE: "Welcome to %s.",
+            REPROMPT_AGAIN: "Can I help you with something else?",
+            WELCOME_REPROMPT: "You can control your browser via actions like, navigate back, visit facebook ... Now, what can I help you with.",
             DISPLAY_CARD_TITLE: '%s  - Action for %s.',
             HELP_MESSAGE: "You can ask questions such as, what\'s the browser action, or, you can say exit...Now, what can I help you with?",
             HELP_REPROMT: "You can say things like, what\'s the browser action, or you can say exit...Now, what can I help you with?",
