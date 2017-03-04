@@ -23,7 +23,7 @@ app.get("/", (req, res) => {
 
 app.post("/action", (req, res) => {
   let action = req.body.action;
-  console.log("action received");
+  console.log("action received: "+ action);
   if (action) { 
     io.emit("action", action);
 
