@@ -1,4 +1,6 @@
-chrome.browserAction.onClicked.addListener(function(tab) {
-  chrome.tabs.create();
-  console.log('NEW TAB');
-});
+document.getElementById("cmd_newtab").addEventListener("click", newTab);
+
+function newTab() {
+    chrome.tabs.create({});
+    console.log("Tab created!");
+}
