@@ -10,14 +10,9 @@
 		"default_icon": "icon.png",
 		"default_popup": "popup.html"
 	},
-	"background": {
-   		"persistent": false,
-    	"scripts": ["background.js"]
-  	},
 	"permissions":[
 		"http://*/*", 
 		"http://*/*", 
-		"tabs",
-		"background" 
+		"tabs"
 	]
 }
