@@ -1,10 +1,24 @@
-var express = require('express')
-var app = express()
+const express = require("express");
+const app = express();
+const path = require("path");
+const server = require("http").createServer(app);
+const io = require("socket.io")(server);
 
-app.get('/', function (req, res) {
-  res.send('Hello World!')
-})
 
-app.listen(process.env.PORT || 3000, function () {
-  console.log('Example app listening on port 3000!')
-})
+io.on("connection", () => {
+  console.log("new connection");
+});
+
+
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+  io.emit("alert","Someone requested root!");
+});
+
+app.get("/client", (req, res) => {
+  res.sendFile(path.join(__dirname, "client.html"));
+});
+
+server.listen(process.env.PORT || 3000, () => {
+  console.log("Example app listening on port 3000!");
+});
