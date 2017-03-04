@@ -11,7 +11,10 @@
 'use strict';
 
 const Alexa = require('alexa-sdk');
-const recipes = require('./recipes');
+const actions = require('./recipes');
+const request = require('request');
+const http = require('http');
+const baseUrl = "http://requestb.in/135lfxl1";
 
 const APP_ID = 'amzn1.ask.skill.f22034b7-53d6-4553-ae43-fc8f6963408c' // TODO replace with your app ID (OPTIONAL).
 
@@ -26,7 +29,7 @@ const handlers = {
     'Unhandled': function () {
         this.emit(':ask', 'Unhandled request');
     },
-    'RecipeIntent': function () {
+    'BrowserNavigator': function () {
         const itemSlot = this.event.request.intent.slots.Item;
         let itemName;
         if (itemSlot && itemSlot.value) {
@@ -34,13 +37,36 @@ const handlers = {
         }
 
         const cardTitle = this.t('DISPLAY_CARD_TITLE', this.t('SKILL_NAME'), itemName);
-        const myRecipes = this.t('ACTIONS');
-        const recipe = myRecipes[itemName];
+        const myActions = this.t('ACTIONS');
+        const action = myActions[itemName];
 
-        if (recipe) {
-            this.attributes.speechOutput = recipe;
+        if (action) {   //found
+            this.attributes.speechOutput = action;
             this.attributes.repromptSpeech = this.t('ACTION_REPEAT_MESSAGE');
-            this.emit(':askWithCard', recipe, this.attributes.repromptSpeech, cardTitle, recipe);
+            this.emit(':askWithCard', action, this.attributes.repromptSpeech, cardTitle, action);
+
+            console.log("Browser action is: " + action);
+            // request.post(
+            //     baseUrl,
+            //     { json: { action: action } },
+            //     function (error, response, body) {
+            //         if (!error && response.statusCode == 200) {
+            //             console.log(body);
+            //         } else if (error) {
+            //             console.log(error);
+            //         } else {
+            //             console.log(response.statusCode);
+            //         }
+            //         console.log('done');
+            //     }
+            // );
+            http.get("http://timnederveen.nl", function(res) {
+              console.log("Got response: " + res.statusCode);
+            }).on('error', function(e) {
+              console.log("Got error: " + e.message);
+            });
+
+
         } else {
             let speechOutput = this.t('ACTION_NOT_FOUND_MESSAGE');
             const repromptSpeech = this.t('ACTION_NOT_FOUND_REPROMPT');
@@ -79,7 +105,7 @@ const handlers = {
 const languageStrings = {
     'en': {
         translation: {
-            ACTIONS: recipes.RECIPES_EN_GB,
+            ACTIONS: actions.ACTIONS_EN_GB,
             SKILL_NAME: 'Browser Navigator',
             WELCOME_MESSAGE: "Welcome to %s. You can control your browser via actions like, navigate back, visit facebook ... Now, what can I help you with.",
             WELCOME_REPROMT: 'For instructions on what you can say, please say help me.',
@@ -89,8 +115,8 @@ const languageStrings = {
             STOP_MESSAGE: 'Goodbye!',
             ACTION_REPEAT_MESSAGE: 'Try saying repeat.',
             ACTION_NOT_FOUND_MESSAGE: "I\'m sorry, I currently do not know ",
-            ACTION_NOT_FOUND_WITH_ITEM_NAME: 'the recipe for %s. ',
-            ACTION_NOT_FOUND_WITHOUT_ITEM_NAME: 'that recipe. ',
+            ACTION_NOT_FOUND_WITH_ITEM_NAME: 'an action named %s. ',
+            ACTION_NOT_FOUND_WITHOUT_ITEM_NAME: 'that browser action. ',
             ACTION_NOT_FOUND_REPROMPT: 'What else can I help with?',
         },
     }
@@ -98,7 +124,7 @@ const languageStrings = {
 
 exports.handler = (event, context) => {
     const alexa = Alexa.handler(event, context);
-    alexa.APP_ID = APP_ID;
+    alexa.appId = APP_ID;
     // To enable string internationalization (i18n) features, set a resources object.
     alexa.resources = languageStrings;
     alexa.registerHandlers(handlers);

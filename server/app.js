@@ -15,6 +15,11 @@ app.get("/", (req, res) => {
   io.emit("alert","Someone requested root!");
 });
 
+app.post("/action", (req, res) => {
+  res.send("Hello World!");
+  io.emit("alert","Someone requested an action!");
+});
+
 app.get("/client", (req, res) => {
   res.sendFile(path.join(__dirname, "client.html"));
 });
