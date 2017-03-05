@@ -27,17 +27,32 @@ function goBack(e){
 	});
 }
 
+
 function openFacebook() {
 	chrome.tabs.getSelected(null, function(tab){
     		chrome.tabs.update(tab.id, {url: "https://www.facebook.com/"})
-    		console.log("Went to https://www.facebook.com/")
+    		console.log("Facebook opened")
 	});
 }
 
 function openYoutube() {
 	chrome.tabs.getSelected(null, function(tab){
     		chrome.tabs.update(tab.id, {url: "https://www.youtube.com/"})
-    		console.log("Went to https://www.youtube.com/")
+    		console.log("Youtube opened")
+	});
+}
+
+function openTwitter(e){
+	chrome.tabs.getSelected(null, function(tab){
+    	chrome.tabs.update(tab.id, {url: "https://twitter.com/"})
+    	console.log("Twitter opened")
+	});
+}
+
+function openNewspaper(e){
+	chrome.tabs.getSelected(null, function(tab){
+    	chrome.tabs.update(tab.id, {url: "https://www.theguardian.com/"})
+    	console.log("Newspaper opened")
 	});
 }
 
@@ -48,4 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	document.getElementById("cmd_goBack").addEventListener('click', goBack);
 	document.getElementById("cmd_facebook").addEventListener('click', openFacebook);
 	document.getElementById("cmd_youtube").addEventListener('click', openYoutube);
+	document.getElementById("cmd_twitter").addEventListener('click', openTwitter);
+	document.getElementById("cmd_newspaper").addEventListener('click', openNewspaper);
+
 });
