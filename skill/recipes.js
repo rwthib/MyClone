@@ -21,10 +21,10 @@ module.exports = {
         'close tab': 'tab closed',
         'refresh page': 'page reloaded',
         'display links': 'links highlighted',
-        'open first link': 'opening first link',
-        'open second link': 'opening second link',
-        'open third link': 'opening third link',
-        'open fourth link': 'opening fourth link'
+        'open 1st link': 'opening first link',
+        'open 2nd link': 'opening second link',
+        'open 3rd link': 'opening third link',
+        'open 4th link': 'opening fourth link'
     }
 };
     

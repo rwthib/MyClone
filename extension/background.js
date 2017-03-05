@@ -56,16 +56,16 @@ socket.on('action', function (action) {
       case 'display links':
           highlightLinks();
           break;
-      case 'open first link':
+      case 'open 1st link':
           selectLink(1);
           break;
-      case 'open second link':
+      case 'open 2nd link':
           selectLink(2);
           break;
-      case 'open third link':
+      case 'open 3rd link':
           selectLink(3);
           break;
-      case 'open fourth link':
+      case 'open 4th link':
           selectLink(4);
           break;
       default:
@@ -113,10 +113,11 @@ function selectLink(n) {
   // });
   // $x("//*[@id=\"rso\"]/div/div/div[1]/div/h3/a")[0].href
   // bkg.console.log(getElementByXpath("//*[@id=\"rso\"]/div/div/div[1]/div/h3/a")[0]);
+  bkg.console.log('Opening link ' + n);
 
   chrome.tabs.getSelected(null, function(tab){
     chrome.tabs.executeScript(tab.id, {
-      code: `getElementByXpath('//*[@id=\"rso\"]/div/div/div[${n}]/div/h3/a')`
+      code: `function getElementByXpath(path) {return document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;}var link = getElementByXpath('//*[@id=\"rso\"]/div/div/div[${n}]/div/h3/a').href;window.location.href = link`
     }, function(results){ bkg.console.log(results); } )
   });
   // var i = 1;
