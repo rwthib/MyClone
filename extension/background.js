@@ -38,11 +38,20 @@ socket.on('action', function (action) {
       case 'open google':
           loadPage('https://google.com');
           break;
+      case 'open hacker news':
+          loadPage('https://news.ycombinator.com');
+          break;
+      case 'open twitter':
+          loadPage('https://twitter.com');
+          break;
+      case 'show news':
+          loadPage('https://www.theguardian.com/');
+          break;
       case 'scroll up':
-          //TODD
+          scrollUp();
           break;
       case 'scroll down':
-          //TODO
+          scrollDown();
           break;
       case 'press enter':
           //TODO
@@ -118,6 +127,20 @@ function goBack(e){
       
   });
   // window.history.go(-1); //TODO: inject via content script
+}
+
+function scrollDown(e){
+  chrome.tabs.getSelected(null, function(tab){
+    chrome.tabs.executeScript(tab.id, {code: 'document.body.scrollTop+=700;'})
+    // bkg.console.log("Went back")
+  });
+}
+
+function scrollUp(e){
+  chrome.tabs.getSelected(null, function(tab){
+    chrome.tabs.executeScript(tab.id, {code: 'document.body.scrollTop-=700;'})
+    // bkg.console.log("Went back")
+  });
 }
 
 // document.addEventListener('DOMContentLoaded', function() {
