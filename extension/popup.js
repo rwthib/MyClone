@@ -38,7 +38,7 @@ function openYoutube(e){
 	chrome.tabs.getSelected(null, function(tab){
     	chrome.tabs.update(tab.id, {url: "https://youtube.com/"})
     	console.log("YouTube opened")
-	});
+    });
 }
 
 function openTwitter(e){
@@ -64,4 +64,5 @@ document.addEventListener('DOMContentLoaded', function() {
 	document.getElementById("cmd_youtube").addEventListener('click', openYoutube);
 	document.getElementById("cmd_twitter").addEventListener('click', openTwitter);
 	document.getElementById("cmd_newspaper").addEventListener('click', openNewspaper);
+
 });
