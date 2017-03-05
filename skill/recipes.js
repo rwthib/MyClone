@@ -6,11 +6,16 @@ module.exports = {
         'navigate forward': 'navigating forward',
         'open facebook': 'loading facebook',
         'open youtube' : 'loading youtube',
+        'open google': 'loading google',
         'scroll down': 'scrolling down',
         'scroll up': 'scrolling up',
-        'enter': 'enter pressed',
-        'spacebar': 'spacebar pressed',
-        'search with google': 'what would you like to search for?'
+        'press enter': 'enter pressed',
+        'press spacebar': 'spacebar pressed',
+        'search with google': 'what would you like to search for?',
+        'new tab': 'which website shall I load?',
+        'close tab': 'tab closed',
+        'refresh page': 'page reloaded'
+
 
     }
 };
