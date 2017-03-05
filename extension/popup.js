@@ -27,9 +27,25 @@ function goBack(e){
 	});
 }
 
+function openFacebook() {
+	chrome.tabs.getSelected(null, function(tab){
+    		chrome.tabs.update(tab.id, {url: "https://www.facebook.com/"})
+    		console.log("Went to https://www.facebook.com/")
+	});
+}
+
+function openYoutube() {
+	chrome.tabs.getSelected(null, function(tab){
+    		chrome.tabs.update(tab.id, {url: "https://www.youtube.com/"})
+    		console.log("Went to https://www.youtube.com/")
+	});
+}
+
 document.addEventListener('DOMContentLoaded', function() {
 	document.getElementById("cmd_newtab").addEventListener('click', newTab);
 	document.getElementById("cmd_refresh").addEventListener('click', refreshing);
 	document.getElementById("cmd_removetab").addEventListener('click', removeTab);
 	document.getElementById("cmd_goBack").addEventListener('click', goBack);
+	document.getElementById("cmd_facebook").addEventListener('click', openFacebook);
+	document.getElementById("cmd_youtube").addEventListener('click', openYoutube);
 });
