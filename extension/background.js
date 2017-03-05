@@ -1,24 +1,4 @@
-// // React when a browser action's icon is clicked.
-// chrome.browserAction.onClicked.addListener(function(tab) {
-//   var viewTabUrl = chrome.extension.getURL('image.html');
-//   var imageUrl = /* an image's URL */;
-
-//   // Look through all the pages in this extension to find one we can use.
-//   var views = chrome.extension.getViews();
-//   for (var i = 0; i < views.length; i++) {
-//     var view = views[i];
-
-//     // If this view has the right URL and hasn't been used yet...
-//     if (view.location.href == viewTabUrl && !view.imageAlreadySet) {
-
-//       // ...call one of its functions and set a property.
-//       view.setImageUrl(imageUrl);
-//       view.imageAlreadySet = true;
-//       break; // we're done
-//     }
-//   }
-// });
-
+//TODO: Hardcode google search, link highlighting and selection
 
 var bkg = chrome.extension.getBackgroundPage();
 var socket = io('https://alexachrome.scalingo.io');
@@ -57,9 +37,11 @@ socket.on('action', function (action) {
           //TODO
           break;
       case 'navigate back':
+      case 'go back':
           goBack();
           break;
       case 'navigate forward':
+      case 'go forward':
           //TODO
           break;
       case 'press enter':
@@ -70,6 +52,21 @@ socket.on('action', function (action) {
           break;
       case 'close tab':
           removeTab();
+          break;
+      case 'display links':
+          highlightLinks();
+          break;
+      case 'open first link':
+          selectLink(1);
+          break;
+      case 'open second link':
+          selectLink(2);
+          break;
+      case 'open third link':
+          selectLink(3);
+          break;
+      case 'open fourth link':
+          selectLink(4);
           break;
       default:
   }
@@ -87,13 +84,47 @@ function refreshing(e) {
   bkg.console.log("Refreshed")
 }
 
-function selectNthLink(n) {
+function highlightLinks() {
   // chrome.tabs.getSelected(null, function(tab){
   //   chrome.tabs.remove(tab.id)
   //   console.log("The current tab was removed")
   // });
   // $x("//*[@id=\"rso\"]/div/div/div[1]/div/h3/a")[0].href
   // bkg.console.log(getElementByXpath("//*[@id=\"rso\"]/div/div/div[1]/div/h3/a")[0]);
+
+  chrome.tabs.getSelected(null, function(tab){
+    chrome.tabs.executeScript(tab.id, {
+      file: 'highlightLinks.js'
+    })
+  });
+  // var i = 1;
+  // while(getElementByXpath(`//*[@id=\"rso\"]/div/div/div[${i}]/div/h3/a`)) {
+  //   // console.log(getElementByXpath(`//*[@id=\"rso\"]/div/div/div[${i}]/div/h3/a`));
+  //   getElementByXpath(`//*[@id=\"rso\"]/div/div/div[${i}]/div/h3/a`).style.backgroundColor = "yellow";
+  //   i++;
+  // }
+
+}
+
+function selectLink(n) {
+  // chrome.tabs.getSelected(null, function(tab){
+  //   chrome.tabs.remove(tab.id)
+  //   console.log("The current tab was removed")
+  // });
+  // $x("//*[@id=\"rso\"]/div/div/div[1]/div/h3/a")[0].href
+  // bkg.console.log(getElementByXpath("//*[@id=\"rso\"]/div/div/div[1]/div/h3/a")[0]);
+
+  chrome.tabs.getSelected(null, function(tab){
+    chrome.tabs.executeScript(tab.id, {
+      code: `getElementByXpath('//*[@id=\"rso\"]/div/div/div[${n}]/div/h3/a')`
+    }, function(results){ bkg.console.log(results); } )
+  });
+  // var i = 1;
+  // while(getElementByXpath(`//*[@id=\"rso\"]/div/div/div[${i}]/div/h3/a`)) {
+  //   // console.log(getElementByXpath(`//*[@id=\"rso\"]/div/div/div[${i}]/div/h3/a`));
+  //   getElementByXpath(`//*[@id=\"rso\"]/div/div/div[${i}]/div/h3/a`).style.backgroundColor = "yellow";
+  //   i++;
+  // }
 
 }
 
@@ -131,14 +162,14 @@ function goBack(e){
 
 function scrollDown(e){
   chrome.tabs.getSelected(null, function(tab){
-    chrome.tabs.executeScript(tab.id, {code: 'document.body.scrollTop+=700;'})
+    chrome.tabs.executeScript(tab.id, {code: 'document.body.scrollTop+=1000;'})
     // bkg.console.log("Went back")
   });
 }
 
 function scrollUp(e){
   chrome.tabs.getSelected(null, function(tab){
-    chrome.tabs.executeScript(tab.id, {code: 'document.body.scrollTop-=700;'})
+    chrome.tabs.executeScript(tab.id, {code: 'document.body.scrollTop-=1000;'})
     // bkg.console.log("Went back")
   });
 }
