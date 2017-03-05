@@ -54,18 +54,23 @@ socket.on('action', function (action) {
           removeTab();
           break;
       case 'display links':
+      case 'highlight links':
+      case 'show links':
+      case 'display options':
+      case 'highlight options':
+      case 'show options':
           highlightLinks();
           break;
-      case 'open 1st link':
+      case 'open 1st':
           selectLink(1);
           break;
-      case 'open 2nd link':
+      case 'open 2nd':
           selectLink(2);
           break;
-      case 'open 3rd link':
+      case 'open 3rd':
           selectLink(3);
           break;
-      case 'open 4th link':
+      case 'open 4th':
           selectLink(4);
           break;
       default:
