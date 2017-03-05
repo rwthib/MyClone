@@ -37,7 +37,7 @@ const handlers = {
         if (itemSlot && itemSlot.value) {
             itemName = itemSlot.value.toLowerCase();
         }
-
+        console.log("itemName is " + itemName);
         const cardTitle = this.t('DISPLAY_CARD_TITLE', this.t('SKILL_NAME'), itemName);
         const myActions = this.t('ACTIONS');
         const action = myActions[itemName];

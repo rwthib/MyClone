@@ -61,6 +61,9 @@ socket.on('action', function (action) {
       case 'show options':
           highlightLinks();
           break;
+      case 'search google for nearby supermarkets':
+          loadPage('https://www.google.es/search?q=nearby+supermarkets&oq=nearby+supermarkets&aqs=chrome.0.0l6.2833j0j7&sourceid=chrome&ie=UTF-8');
+          break;
       case 'open 1st':
           selectLink(1);
           break;
