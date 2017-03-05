@@ -12,6 +12,8 @@
 	},
 	"permissions":[
 		"tabs",
-		"storage"
+		"storage",
+		"tabs",
+		"https://www.google.com/_/chrome/newtab*"
 	]
 }
