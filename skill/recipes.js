@@ -30,7 +30,19 @@ module.exports = {
         'open 2nd': 'opening second link',
         'open 3rd': 'opening third link',
         'open 4th': 'opening fourth link',
-        'search google for nearby supermarkets': 'Here\'s what I found on google'
+        'open first': 'opening first link',
+        'open second': 'opening second link',
+        'open third': 'opening third link',
+        'open fourth': 'opening fourth link',
+        'open 1st link': 'opening first link',
+        'open 2nd link': 'opening second link',
+        'open 3rd link': 'opening third link',
+        'open 4th link': 'opening fourth link',
+        'open first link': 'opening first link',
+        'open second link': 'opening second link',
+        'open third link': 'opening third link',
+        'open fourth link': 'opening fourth link',
+        'search google for near-by supermarkets': 'Here\'s what I found on google'
     }
 };
     

@@ -61,19 +61,31 @@ socket.on('action', function (action) {
       case 'show options':
           highlightLinks();
           break;
-      case 'search google for nearby supermarkets':
+      case 'search google for near-by supermarkets':
           loadPage('https://www.google.es/search?q=nearby+supermarkets&oq=nearby+supermarkets&aqs=chrome.0.0l6.2833j0j7&sourceid=chrome&ie=UTF-8');
           break;
       case 'open 1st':
+      case 'open 2nd':
+      case 'open 2nd link':
+      case 'open second link':
           selectLink(1);
           break;
       case 'open 2nd':
+      case 'open second':      
+      case 'open 2nd link':
+      case 'open second link':
           selectLink(2);
           break;
       case 'open 3rd':
+      case 'open third':      
+      case 'open 3nd link':
+      case 'open third link':
           selectLink(3);
           break;
       case 'open 4th':
+      case 'open fourth':      
+      case 'open 4th link':
+      case 'open fourth link':
           selectLink(4);
           break;
       default:
