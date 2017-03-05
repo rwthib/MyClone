@@ -19,13 +19,15 @@ const baseUrl = "alexachrome.scalingo.io";
 const APP_ID = 'amzn1.ask.skill.f22034b7-53d6-4553-ae43-fc8f6963408c' // TODO replace with your app ID (OPTIONAL).
 
 const handlers = {
-    'NewSession': function () {
-        this.attributes.speechOutput = this.t('WELCOME_MESSAGE', this.t('SKILL_NAME'));
-        // If the user either does not reply to the welcome message or says something that is not
-        // understood, they will be prompted again with this text.
-        this.attributes.repromptSpeech = this.t('WELCOME_REPROMPT');
-        this.emit(':ask', this.attributes.speechOutput, this.attributes.repromptSpeech);
-    },
+    // 'NewSession': function () {
+        
+    //     this.attributes.speechOutput = this.t('WELCOME_MESSAGE', this.t('SKILL_NAME'));
+    //     // If the user either does not reply to the welcome message or says something that is not
+    //     // understood, they will be prompted again with this text.
+    //     this.attributes.repromptSpeech = this.t('WELCOME_REPROMPT');
+    //     this.emit(':ask', this.attributes.speechOutput, this.attributes.repromptSpeech);
+
+    // },
     'Unhandled': function () {
         this.emit(':ask', 'Unhandled request');
     },

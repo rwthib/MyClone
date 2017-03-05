@@ -21,7 +21,6 @@
 
 
 var bkg = chrome.extension.getBackgroundPage();
-bkg.console.log('test');
 var socket = io('https://alexachrome.scalingo.io');
 socket.on('connect', function(){
   bkg.console.log('connected');
@@ -71,18 +70,32 @@ socket.on('action', function (action) {
 
 function newTab(e) {
   chrome.tabs.create({});
-  console.log("New tab created")
+  bkg.console.log("New tab created")
 }
 
 function refreshing(e) {
   chrome.tabs.reload()
-  console.log("Refreshed")
+  bkg.console.log("Refreshed")
+}
+
+function selectNthLink(n) {
+  // chrome.tabs.getSelected(null, function(tab){
+  //   chrome.tabs.remove(tab.id)
+  //   console.log("The current tab was removed")
+  // });
+  // $x("//*[@id=\"rso\"]/div/div/div[1]/div/h3/a")[0].href
+  // bkg.console.log(getElementByXpath("//*[@id=\"rso\"]/div/div/div[1]/div/h3/a")[0]);
+
+}
+
+function getElementByXpath(path) {
+  return document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
 }
 
 function removeTab(e) {
   chrome.tabs.getSelected(null, function(tab){
       chrome.tabs.remove(tab.id)
-      console.log("The current tab was removed")
+      bkg.console.log("The current tab was removed")
   });
 }
 
@@ -100,7 +113,7 @@ function goBack(e){
       var lastUrl = historyItems[1].url;
       chrome.tabs.getSelected(null, function(tab){
         chrome.tabs.update(tab.id, {url: lastUrl})
-        console.log("Went back")
+        bkg.console.log("Went back")
       });
       
   });
