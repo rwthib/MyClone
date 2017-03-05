@@ -12,8 +12,8 @@ app.use((req, res, next) => {
   next();
 });
 
-io.on("connection", () => {
-  console.log("new connection");
+io.on("connection", socket => {
+  console.log("new connection from "+socket.id);
 });
 
 
