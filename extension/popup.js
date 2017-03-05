@@ -27,6 +27,20 @@ function goBack(e){
 	});
 }
 
+function openFacebook(e){
+	chrome.tabs.getSelected(null, function(tab){
+    	chrome.tabs.update(tab.id, {url: "https://facebook.com/"})
+    	console.log("Facebook opened")
+	});
+}
+
+function openYoutube(e){
+	chrome.tabs.getSelected(null, function(tab){
+    	chrome.tabs.update(tab.id, {url: "https://youtube.com/"})
+    	console.log("YouTube opened")
+	});
+}
+
 function openTwitter(e){
 	chrome.tabs.getSelected(null, function(tab){
     	chrome.tabs.update(tab.id, {url: "https://twitter.com/"})
@@ -46,6 +60,8 @@ document.addEventListener('DOMContentLoaded', function() {
 	document.getElementById("cmd_refresh").addEventListener('click', refreshing);
 	document.getElementById("cmd_removetab").addEventListener('click', removeTab);
 	document.getElementById("cmd_goBack").addEventListener('click', goBack);
+	document.getElementById("cmd_facebook").addEventListener('click', openFacebook);
+	document.getElementById("cmd_youtube").addEventListener('click', openYoutube);
 	document.getElementById("cmd_twitter").addEventListener('click', openTwitter);
 	document.getElementById("cmd_newspaper").addEventListener('click', openNewspaper);
 });
