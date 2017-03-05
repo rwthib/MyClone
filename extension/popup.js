@@ -24,7 +24,6 @@ function goBack(e){
     		chrome.tabs.update(tab.id, {url: lastUrl})
     		console.log("Went back")
 		});
-    	
 	});
 }
 
