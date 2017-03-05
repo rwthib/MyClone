@@ -55,6 +55,14 @@ function openNewspaper(e){
 	});
 }
 
+function scrollDown(e){
+	chrome.tabs.executeScript({code: 'document.body.scrollTop+=500;'})
+}
+
+function scrollUp(e){
+	chrome.tabs.executeScript({code: 'document.body.scrollTop-=500;'})
+}
+
 document.addEventListener('DOMContentLoaded', function() {
 	document.getElementById("cmd_newtab").addEventListener('click', newTab);
 	document.getElementById("cmd_refresh").addEventListener('click', refreshing);
@@ -64,5 +72,6 @@ document.addEventListener('DOMContentLoaded', function() {
 	document.getElementById("cmd_youtube").addEventListener('click', openYoutube);
 	document.getElementById("cmd_twitter").addEventListener('click', openTwitter);
 	document.getElementById("cmd_newspaper").addEventListener('click', openNewspaper);
-
+	document.getElementById("cmd_scrollDown").addEventListener('click', scrollDown);
+	document.getElementById("cmd_scrollUp").addEventListener('click', scrollUp);
 });
