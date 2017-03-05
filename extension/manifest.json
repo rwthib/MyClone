@@ -17,6 +17,8 @@
 	},
 	"permissions":[
 		"tabs",
-		"history"
+		"history",
+		"http://*/*",
+		"https://*/*"
 	]
 }
