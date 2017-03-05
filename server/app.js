@@ -4,6 +4,13 @@ const path = require("path");
 const server = require("http").createServer(app);
 const io = require("socket.io")(server);
 
+const bodyParser = require("body-parser");
+app.use(bodyParser.json());
+
+app.use((req, res, next) => {
+  res.removeHeader("X-Powered-By");
+  next();
+});
 
 io.on("connection", () => {
   console.log("new connection");
@@ -12,12 +19,19 @@ io.on("connection", () => {
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
-  io.emit("alert","Someone requested root!");
 });
 
 app.post("/action", (req, res) => {
-  res.send("Hello World!");
-  io.emit("alert","Someone requested an action!");
+  let action = req.body.action;
+  console.log("action received: "+ action);
+  if (action) { 
+    io.emit("action", action);
+
+    res.status(200).send("{\"message\": \"action '"+action+"' sent\" }");
+  }
+  else {
+    res.status(400).send("{\"message\": \"no action specified.\" }");
+  }
 });
 
 app.get("/client", (req, res) => {

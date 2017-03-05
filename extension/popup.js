@@ -4,12 +4,17 @@ function newTab(e) {
 }
 
 function refreshing(e) {
+<<<<<<< HEAD
 	chrome.tabs.reload();
 	//console.log("Refreshed");
 }
 
 function goingUp() {
 	chrome.tabs.executeScript ({code:"document.body.scrollTop += 1000;"});
+=======
+	chrome.tabs.reload()
+	console.log("Refreshed")
+>>>>>>> d4f779eef450d4d370bd9eb42e7bf12eb264dae9
 }
 
 function removeTab(e) {
@@ -28,20 +33,30 @@ function goBack(e){
     		chrome.tabs.update(tab.id, {url: lastUrl})
     		console.log("Went back")
 		});
+<<<<<<< HEAD
     	
 	});
 }
 
 
+=======
+	});
+}
+
+>>>>>>> d4f779eef450d4d370bd9eb42e7bf12eb264dae9
 document.addEventListener('DOMContentLoaded', function() {
 	document.getElementById("cmd_newtab").addEventListener('click', newTab);
 	document.getElementById("cmd_refresh").addEventListener('click', refreshing);
 	document.getElementById("cmd_goBack").addEventListener('click', goBack);
 	document.getElementById("cmd_scrollUp").addEventListener('click', goingUp);
 	document.getElementById("cmd_removetab").addEventListener('click', removeTab);
+	document.getElementById("cmd_goBack").addEventListener('click', goBack);
 });
+<<<<<<< HEAD
 
 
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
     //code in here will run every time a user goes onto a new tab, so you can insert your scripts into every new tab
 }); 
+=======
+>>>>>>> d4f779eef450d4d370bd9eb42e7bf12eb264dae9
