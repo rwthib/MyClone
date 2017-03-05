@@ -36,6 +36,10 @@ socket.on('action', function (action) {
       case 'press enter':
           //TODO
           break;
+      case 'refresh':
+      case 'refresh page':
+      case 'reload page':
+          refreshing();
       case 'navigate back':
       case 'go back':
           goBack();

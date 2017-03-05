@@ -20,6 +20,8 @@ module.exports = {
         'new tab': 'which website shall I load?',
         'close tab': 'tab closed',
         'refresh page': 'page reloaded',
+        'refresh': 'page reloaded',
+        'reload page': 'page reloaded',
         'show options': 'links highlighted',
         'display options': 'links highlighted',
         'highlight options': 'links highlighted',
