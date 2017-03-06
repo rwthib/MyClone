@@ -5,7 +5,7 @@ Control your chrome browser with your Amazon Echo via Alexa. This POC, developed
 Short demo on youtube: https://www.youtube.com/watch?v=iCnNRsLW0ns
 
 TODO: 
-- Replace hardcore search intent with 'search for {wildward}' intent
+- include unique amazon account ID in http request and use that as socket.on action string
 - General intents instead of multiple specific string matches
 - Complete generic link selection
 - replace specific numbers with count literal

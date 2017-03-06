@@ -8,18 +8,25 @@ socket.on('action', function (action) {
   /* action can be one of: open facebook, scroll up, scroll down, navigate back, navigate forward, open <site name>, open <url>, search <phrase>*/
   switch(action) {
       case 'open facebook':
+      case 'load facebook':
           loadPage('https://facebook.com');
           break;
       case 'open youtube':
+      case 'load youtube':
           loadPage('https://youtube.com');
           break;
       case 'open google':
-          loadPage('https://google.com');
+      case 'search with google':
+      case 'load google':
+      case 'google':
+          startGoogleVoiceSearch();
           break;
       case 'open hacker news':
+      case 'load hacker news':
           loadPage('https://news.ycombinator.com');
           break;
       case 'open twitter':
+      case 'load twitter':
           loadPage('https://twitter.com');
           break;
       case 'show news':
@@ -64,7 +71,7 @@ socket.on('action', function (action) {
           highlightLinks();
           break;
       case 'search near-by supermarkets':
-          loadPage('https://www.google.es/search?q=nearby+supermarkets&oq=nearby+supermarkets&aqs=chrome.0.0l6.2833j0j7&sourceid=chrome&ie=UTF-8');
+          loadPage('https://www.google.com/search?q=nearby+supermarkets&oq=nearby+supermarkets');
           break;
       case 'open 1st':
       case 'open 2nd':
@@ -129,6 +136,16 @@ function highlightLinks() {
   // }
 
 }
+
+function startGoogleVoiceSearch(n) {
+  loadPage('https://google.com');
+  chrome.tabs.getSelected(null, function(tab){
+    chrome.tabs.executeScript(tab.id, {
+      code: 'myFunc();function myFunc() {console.log(\'polling\');if (document.querySelector(\'[aria-label="Search by voice"]\')) {document.querySelector(\'[aria-label="Search by voice"]\').click();console.log(\'found\');} else {;//setTimeout(myFunc, 100);}}'
+    })
+  });
+}
+
 
 function selectLink(n) {
   // chrome.tabs.getSelected(null, function(tab){
