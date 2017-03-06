@@ -1,4 +1,8 @@
-# ChromeControl
+# Alexa ChromeControl
+
+Control your chrome browser with your Amazon Echo via Alexa. This POC, developed during HackUPC in Barcelona, consists of an Alexa skill, Chrome browser extension, and server that relays the skill's restful requests to the plugin over a websocket connection. Actions already implemented include tab history traversal, link navigation, scrolling, and loading of popular websites.
+
+Short demo on youtube: https://www.youtube.com/watch?v=iCnNRsLW0ns
 
 TODO: 
 - Replace hardcore search intent with 'search for {wildward}' intent
