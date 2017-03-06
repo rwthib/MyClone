@@ -44,7 +44,7 @@ module.exports = {
         'open second link': 'opening second link',
         'open third link': 'opening third link',
         'open fourth link': 'opening fourth link',
-        'search google for near-by supermarkets': 'Here\'s what I found on google'
+        'search near-by supermarkets': 'Here\'s what I found on google'
     }
 };
     

@@ -1,5 +1,3 @@
-//TODO: Hardcode google search, link highlighting and selection
-
 var bkg = chrome.extension.getBackgroundPage();
 var socket = io('https://alexachrome.scalingo.io');
 socket.on('connect', function(){
@@ -65,7 +63,7 @@ socket.on('action', function (action) {
       case 'show options':
           highlightLinks();
           break;
-      case 'search google for near-by supermarkets':
+      case 'search near-by supermarkets':
           loadPage('https://www.google.es/search?q=nearby+supermarkets&oq=nearby+supermarkets&aqs=chrome.0.0l6.2833j0j7&sourceid=chrome&ie=UTF-8');
           break;
       case 'open 1st':
@@ -104,7 +102,9 @@ function newTab(e) {
 }
 
 function refreshing(e) {
-  chrome.tabs.reload()
+  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    chrome.tabs.reload(tabs[0].id);
+  });
   bkg.console.log("Refreshed")
 }
 
