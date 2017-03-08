@@ -2,16 +2,33 @@ function getElementByXpath(path) {
   return document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
 }
 
-var i = 1;
-while(getElementByXpath(`//*[@id=\"rso\"]/div/div/div[${i}]/div/h3/a`)) {
-  // console.log(getElementByXpath(`//*[@id=\"rso\"]/div/div/div[${i}]/div/h3/a`));
-  getElementByXpath(`//*[@id=\"rso\"]/div/div/div[${i}]/div/h3/a`).style.backgroundColor = "yellow";
-  getElementByXpath(`//*[@id=\"rso\"]/div/div/div[${i}]/div/h3`).setAttribute("data-index", i);;
-  i++;
+var currentUrl = window.location.href;
+
+if(currentUrl.includes('google')) {
+	var css = ".r {overflow:visible !important; z-index: 0;position: relative;}.r:before {z-index: 1;display: inline-block;position: absolute;left: -2rem;bottom: 1.2rem;margin: 0 0.5rem 0 0;width: 1.5rem;height: 1.5rem;font-size: 1.2rem;opacity: 0.5;line-height: 1.5rem;text-align: center;background-color: #ff0;border: solid 2px #000;content: attr(data-index);}";
+	// var css = css.concat("a {overflow:visible !important; z-index: 0;position: relative;}a:before {z-index: 1;display: inline-block;position: absolute;left: -2rem;bottom: 1.2rem;margin: 0 0.5rem 0 0;width: 1.5rem;height: 1.5rem;font-size: 1.2rem;opacity: 0.5;line-height: 1.5rem;text-align: center;background-color: #ff0;border: solid 2px #000;content: attr(data-index);}");
+	
+	//todo: concat other css and second while loop. Does not work: selection based on item path in google. Solve by selection based on data attribute
+	//todo: color: inherits; mix-blend-mode: difference; for always seeing number properly
+
+	var i = 1;
+	while(getElementByXpath(`//*[@id=\"rso\"]/div/div/div[${i}]/div/h3/a`)) {
+	  //getElementByXpath(`//*[@id=\"rso\"]/div/div/div[${i}]/div/h3/a`).style.backgroundColor = "yellow";
+	  getElementByXpath(`//*[@id=\"rso\"]/div/div/div[${i}]/div/h3`).setAttribute("data-index", i);
+	  i++;
+	}
+} else {
+	var css = "a {overflow:visible !important; z-index: 0;position: relative;}a:before {z-index: 1;display: inline-block;position: absolute;left: -2rem;bottom: 1.2rem;margin: 0 0.5rem 0 0;width: 1.5rem;height: 1.5rem;font-size: 1.2rem;opacity: 0.5;line-height: 1.5rem;text-align: center;background-color: #ff0;border: solid 2px #000;content: attr(data-index);}";
+	var i = 1;
+	var links = document.getElementsByTagName('a');
+	for(var i = 0; i< links.length; i++){
+	  links[i].setAttribute("data-index", i);
+	  // links[i].style.backgroundColor = "yellow";
+	}
 }
 
 
-var css = ".r {overflow:visible !important; z-index: 0;position: relative;}.r:before {z-index: 1;display: inline-block;position: absolute;left: -2rem;bottom: 1.2rem;margin: 0 0.5rem 0 0;width: 1.5rem;height: 1.5rem;font-size: 1.2rem;opacity: 0.5;line-height: 1.5rem;text-align: center;background-color: #ff0;border: solid 2px #000;content: attr(data-index);}",
+
     head = document.head || document.getElementsByTagName('head')[0],
     style = document.createElement('style');
 

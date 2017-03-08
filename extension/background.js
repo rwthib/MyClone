@@ -51,7 +51,7 @@ socket.on('action', function (action) {
           break;
       case 'navigate forward':
       case 'go forward':
-          //TODO
+          goFoward();
           break;
       case 'press enter':
           //TODO
@@ -138,6 +138,7 @@ function highlightLinks() {
 }
 
 function startGoogleVoiceSearch(n) {
+  bkg.console.log('searching with google');
   loadPage('https://google.com');
   chrome.tabs.getSelected(null, function(tab){
     chrome.tabs.executeScript(tab.id, {
@@ -188,18 +189,30 @@ function loadPage(url) {
   });
 }
 
+//TODO: Check new implementation
 function goBack(e){
-  var microsecondsADay = 1000 * 60 * 60 * 24;
-    var today = (new Date).getTime() - microsecondsADay;
-  chrome.history.search({'text': '', 'startTime': today }, function(historyItems){
-      var lastUrl = historyItems[1].url;
-      chrome.tabs.getSelected(null, function(tab){
-        chrome.tabs.update(tab.id, {url: lastUrl})
-        bkg.console.log("Went back")
-      });
+  // var microsecondsADay = 1000 * 60 * 60 * 24;
+  //   var today = (new Date).getTime() - microsecondsADay;
+  // chrome.history.search({'text': '', 'startTime': today }, function(historyItems){
+  //     var lastUrl = historyItems[1].url;
+  //     chrome.tabs.getSelected(null, function(tab){
+  //       chrome.tabs.update(tab.id, {url: lastUrl})
+  //       bkg.console.log("Went back")
+  //     });
       
+  // });
+  chrome.tabs.getSelected(null, function(tab){
+    chrome.tabs.executeScript(tab.id, {code: 'window.history.go(-1);'})
+    bkg.console.log("Went back")
   });
-  // window.history.go(-1); //TODO: inject via content script
+}
+
+//TODO: Check new implementation
+function goFoward(e){
+  chrome.tabs.getSelected(null, function(tab){
+    chrome.tabs.executeScript(tab.id, {code: 'window.history.go(1);'})
+    bkg.console.log("Went back")
+  });
 }
 
 function scrollDown(e){

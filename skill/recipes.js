@@ -4,8 +4,8 @@ module.exports = {
     ACTIONS_EN_GB: {
         'navigate back': 'navigating back',
         'navigate forward': 'navigating forward',
-        'go forward': 'navigating back',
-        'go back': 'navigating forward',
+        'go forward': 'navigating forward',
+        'go back': 'navigating back',
         'open facebook': 'loading facebook',
         'load facebook': 'loading facebook',
         'open youtube' : 'loading youtube',

@@ -2,7 +2,7 @@ setTimeout(function(){
     document.getElementById("edw-test-utteranceTextField").setAttribute('value','near-by supermarkets');
     document.getElementById("edw-test-textAskButton").click();
     setTimeout(function() {
-    	document.getElementById("edw-test-utteranceTextField").value = 'scroll down';
+    	document.getElementById("edw-test-utteranceTextField").setAttribute('value','near-by supermarkets');
     	document.getElementById("edw-test-textAskButton").click();
     	setTimeout(function() {
     		document.getElementById("edw-test-utteranceTextField").value = 'highlight links';
