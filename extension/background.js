@@ -77,27 +77,31 @@ socket.on('action', function (action) {
       case 'open 2nd':
       case 'open 2nd link':
       case 'open second link':
-          selectLink(1);
+          openLink(1);
           break;
       case 'open 2nd':
       case 'open second':      
       case 'open 2nd link':
       case 'open second link':
-          selectLink(2);
+          openLink(2);
           break;
       case 'open 3rd':
       case 'open third':      
       case 'open 3nd link':
       case 'open third link':
-          selectLink(3);
+          openLink(3);
           break;
       case 'open 4th':
       case 'open fourth':      
       case 'open 4th link':
       case 'open fourth link':
-          selectLink(4);
+          openLink(4);
           break;
       default:
+          if(action.includes('select link')) {
+            const linkNumber = action.substring(12);
+            openLink(linkNumber);
+          }
   }
 });
 
@@ -137,28 +141,29 @@ function highlightLinks() {
 
 }
 
+//TODO: unUpdated fires not once but on every tab update
 function startGoogleVoiceSearch(n) {
   bkg.console.log('searching with google');
   loadPage('https://google.com');
   chrome.tabs.getSelected(null, function(tab){
-    chrome.tabs.onUpdated.addListener(function(tab, info) {
-        if (info.status == "complete") {
-            bkg.console.log('ready');
-            chrome.tabs.executeScript(tab.id, {
-              code: 'console.log(\'voiceSearch script injected\');myFunc();function myFunc() {console.log(\'polling\');if (document.querySelector(\'[aria-label="Search by voice"]\')) {document.querySelector(\'[aria-label="Search by voice"]\').click();console.log(\'found\');} else {;setTimeout(myFunc, 100);}}' 
-            }) 
-        }
-    });
-    // setTimeout(()=>{
-    //   chrome.tabs.executeScript(tab.id, {
-    //     code: 'console.log(\'voiceSearch script injected\');myFunc();function myFunc() {console.log(\'polling\');if (document.querySelector(\'[aria-label="Search by voice"]\')) {document.querySelector(\'[aria-label="Search by voice"]\').click();console.log(\'found\');} else {;setTimeout(myFunc, 100);}}' 
-    //   }) 
-    // }, 1000);
+    // chrome.tabs.onUpdated.addListener(function(tab, info) {
+    //     if (info.status == "complete") {
+    //         bkg.console.log('ready');
+    //         chrome.tabs.executeScript(tab.id, {
+    //           code: 'console.log(\'voiceSearch script injected\');myFunc();function myFunc() {console.log(\'polling\');if (document.querySelector(\'[aria-label="Search by voice"]\')) {document.querySelector(\'[aria-label="Search by voice"]\').click();console.log(\'found\');} else {;setTimeout(myFunc, 100);}}' 
+    //         }) 
+    //     }
+    // });
+    setTimeout(()=>{
+      chrome.tabs.executeScript(tab.id, {
+        code: 'console.log(\'voiceSearch script injected\');myFunc();function myFunc() {console.log(\'polling\');if (document.querySelector(\'[aria-label="Search by voice"]\')) {document.querySelector(\'[aria-label="Search by voice"]\').click();console.log(\'found\');} else {;setTimeout(myFunc, 100);}}' 
+      }) 
+    }, 1000);
   });
 }
 
 
-function selectLink(n) {
+function openLink(n) {
   // chrome.tabs.getSelected(null, function(tab){
   //   chrome.tabs.remove(tab.id)
   //   console.log("The current tab was removed")
@@ -169,7 +174,7 @@ function selectLink(n) {
 
   chrome.tabs.getSelected(null, function(tab){
     chrome.tabs.executeScript(tab.id, {
-      code: `function getElementByXpath(path) {return document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;}var link = getElementByXpath('//*[@id=\"rso\"]/div/div/div[${n}]/div/h3/a').href;window.location.href = link`
+      code: `var link = document.querySelector('[data-index="${n}"]');window.location.href = link`
     }, function(results){ bkg.console.log(results); } )
   });
   // var i = 1;

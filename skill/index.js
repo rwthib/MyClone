@@ -99,7 +99,28 @@ const handlers = {
             }
         });
 
-    },
+    },  
+    'OpenLink': function () {
+        const number = this.event.request.intent.slots.Number.value;
+        console.log("Link to select is " + number);
+        const action = `select link ${number}`;
+        const cardTitle = this.t('DISPLAY_CARD_TITLE', this.t('SKILL_NAME'), action);
+        const myActions = this.t('ACTIONS');
+
+        this.attributes.speechOutput = `Selecting link ${number}`;
+        this.attributes.repromptSpeech = this.t('ACTION_REPEAT_MESSAGE');
+        // this.emit(':askWithCard', action, this.attributes.repromptSpeech, cardTitle, action);
+        postRequest({action:action}, (result) => {
+            if (!result) {
+                this.emit(':tell', 'error during request');
+            }
+            else {
+                this.attributes.repromptSpeech = this.t('REPROMPT_AGAIN');
+                this.emit(':ask', 'Link opened', this.attributes.repromptSpeech);
+            }
+        });
+
+    },  
     'AMAZON.HelpIntent': function () {
         this.attributes.speechOutput = this.t('HELP_MESSAGE');
         this.attributes.repromptSpeech = this.t('HELP_REPROMT');
