@@ -141,9 +141,19 @@ function startGoogleVoiceSearch(n) {
   bkg.console.log('searching with google');
   loadPage('https://google.com');
   chrome.tabs.getSelected(null, function(tab){
-    chrome.tabs.executeScript(tab.id, {
-      code: 'myFunc();function myFunc() {console.log(\'polling\');if (document.querySelector(\'[aria-label="Search by voice"]\')) {document.querySelector(\'[aria-label="Search by voice"]\').click();console.log(\'found\');} else {;//setTimeout(myFunc, 100);}}'
-    })
+    chrome.tabs.onUpdated.addListener(function(tab, info) {
+        if (info.status == "complete") {
+            bkg.console.log('ready');
+            chrome.tabs.executeScript(tab.id, {
+              code: 'console.log(\'voiceSearch script injected\');myFunc();function myFunc() {console.log(\'polling\');if (document.querySelector(\'[aria-label="Search by voice"]\')) {document.querySelector(\'[aria-label="Search by voice"]\').click();console.log(\'found\');} else {;setTimeout(myFunc, 100);}}' 
+            }) 
+        }
+    });
+    // setTimeout(()=>{
+    //   chrome.tabs.executeScript(tab.id, {
+    //     code: 'console.log(\'voiceSearch script injected\');myFunc();function myFunc() {console.log(\'polling\');if (document.querySelector(\'[aria-label="Search by voice"]\')) {document.querySelector(\'[aria-label="Search by voice"]\').click();console.log(\'found\');} else {;setTimeout(myFunc, 100);}}' 
+    //   }) 
+    // }, 1000);
   });
 }
 
@@ -218,14 +228,14 @@ function goFoward(e){
 function scrollDown(e){
   chrome.tabs.getSelected(null, function(tab){
     chrome.tabs.executeScript(tab.id, {code: 'document.body.scrollTop+=1000;'})
-    // bkg.console.log("Went back")
+    bkg.console.log("Scrolling down")
   });
 }
 
 function scrollUp(e){
   chrome.tabs.getSelected(null, function(tab){
     chrome.tabs.executeScript(tab.id, {code: 'document.body.scrollTop-=1000;'})
-    // bkg.console.log("Went back")
+    bkg.console.log("Scrolling up")
   });
 }
 

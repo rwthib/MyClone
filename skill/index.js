@@ -50,18 +50,6 @@ const handlers = {
             console.log("Value is: " + action);
             console.log("Key is: " + itemName);
 
-            // https.post(baseUrl, (res) => {
-            //             let data = "";
-            //             res.on('data', chunk => {
-            //                 data = data + chunk.toString();
-            //             });
-            //             res.on('end', () => {
-            //                 let json = JSON.parse(data);
-            //                 let event = json[0];
-            //                 this.attributes.speechOutput = this.attributes.speechOutput + event.name + " at " + event.place.name + ". It starts at " + event.start_time;
-            //                 this.emit(':tell', this.attributes.speechOutput, this.attributes.speechOutput);
-            //             });
-            // });
             postRequest({action:itemName}, (result) => {
                 if (!result) {
                     this.emit(':tell', 'error during request');
@@ -87,6 +75,30 @@ const handlers = {
 
             this.emit(':ask', speechOutput, repromptSpeech);
         }
+    },
+    'SearchWithGoogle': function () {
+        // const itemSlot = this.event.request.intent.slots.Item;
+        // let itemName;
+        // if (itemSlot && itemSlot.value) {
+        //     itemName = itemSlot.value.toLowerCase();
+        // }
+        // console.log("itemName is " + itemName);
+        const cardTitle = this.t('DISPLAY_CARD_TITLE', this.t('SKILL_NAME'), 'Search with Google');
+        const myActions = this.t('ACTIONS');
+
+        this.attributes.speechOutput = 'Dictate query';
+        this.attributes.repromptSpeech = this.t('ACTION_REPEAT_MESSAGE');
+        // this.emit(':askWithCard', action, this.attributes.repromptSpeech, cardTitle, action);
+        postRequest({action:'load google'}, (result) => {
+            if (!result) {
+                this.emit(':tell', 'error during request');
+            }
+            else {
+                this.attributes.repromptSpeech = this.t('REPROMPT_AGAIN');
+                this.emit(':ask', 'Dictate query', this.attributes.repromptSpeech);
+            }
+        });
+
     },
     'AMAZON.HelpIntent': function () {
         this.attributes.speechOutput = this.t('HELP_MESSAGE');
