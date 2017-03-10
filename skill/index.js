@@ -1,11 +1,11 @@
 /* eslint-disable  func-names */
 /* eslint quote-props: ["error", "consistent"]*/
 /**
- * This sample demonstrates a sample skill built with Amazon Alexa Skills nodejs
- * skill development kit.
- * This sample supports multiple languages (en-US, en-GB, de-GB).
- * The Intent Schema, Custom Slot and Sample Utterances for this skill, as well
- * as testing instructions are located at https://github.com/alexa/skill-sample-nodejs-howto
+  *
+  * TODO:
+  * - Include unique amazon account ID in http request and use that as socket.on action string
+  * - General intents instead of multiple specific string matches
+  * - use this.event & this.context
  **/
 
 'use strict';
@@ -29,7 +29,7 @@ const handlers = {
 
     // },
     'Unhandled': function () {
-        this.emit(':ask', 'Unhandled request');
+        this.emit(':ask', 'ChromeControl started. Control your browser via actions like, search with google, navigate back, scroll down ... Now, what can I help you with.');
     },
     'BrowserNavigator': function () {
         const itemSlot = this.event.request.intent.slots.Item;

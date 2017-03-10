@@ -41,6 +41,9 @@ socket.on('action', function (action) {
       case 'press enter':
           //TODO
           break;
+      case 'press spacebar':
+          //TODO
+          break;
       case 'refresh':
       case 'refresh page':
       case 'reload page':
@@ -53,9 +56,7 @@ socket.on('action', function (action) {
       case 'go forward':
           goFoward();
           break;
-      case 'press enter':
-          //TODO
-          break;
+      case 'open tab':
       case 'new tab':
           newTab();
           break;
@@ -173,7 +174,7 @@ function startGoogleVoiceSearch(n) {
     // });
     setTimeout(()=>{
       chrome.tabs.executeScript(tab.id, {
-        code: 'console.log(\'voiceSearch script injected\');myFunc();function myFunc() {console.log(\'polling\');if (document.querySelector(\'[aria-label="Search by voice"]\')) {document.querySelector(\'[aria-label="Search by voice"]\').click();console.log(\'found\');} else {;setTimeout(myFunc, 100);}}' 
+        code: 'console.log(\'voiceSearch script injected\');myFunc();function myFunc() {console.log(\'polling\');if (document.querySelector(\'[aria-label="Search by voice"]\')) {setTimeout(()=>{document.querySelector(\'[aria-label="Search by voice"]\').click();},200);console.log(\'found:\');console.log(document.querySelector(\'[aria-label="Search by voice"]\'));} else {;setTimeout(myFunc, 100);}}' 
       }) 
     }, 1000);
   });
@@ -191,7 +192,7 @@ function openLink(n) {
 
   chrome.tabs.getSelected(null, function(tab){
     chrome.tabs.executeScript(tab.id, {
-      code: `var link = document.querySelector('[data-index="${n}"]');window.location.href = link`
+      code: `var element = document.querySelector('[data-index="${n}"]');var link = window.location.href.includes('google') ? element.getElementsByTagName('a')[0] : element; console.log(link);window.location.href = link`
     }, function(results){ bkg.console.log(results); } )
   });
   // var i = 1;
@@ -221,25 +222,13 @@ function loadPage(url) {
   });
 }
 
-//TODO: Check new implementation
 function goBack(e){
-  // var microsecondsADay = 1000 * 60 * 60 * 24;
-  //   var today = (new Date).getTime() - microsecondsADay;
-  // chrome.history.search({'text': '', 'startTime': today }, function(historyItems){
-  //     var lastUrl = historyItems[1].url;
-  //     chrome.tabs.getSelected(null, function(tab){
-  //       chrome.tabs.update(tab.id, {url: lastUrl})
-  //       bkg.console.log("Went back")
-  //     });
-      
-  // });
   chrome.tabs.getSelected(null, function(tab){
     chrome.tabs.executeScript(tab.id, {code: 'window.history.go(-1);'})
     bkg.console.log("Went back")
   });
 }
 
-//TODO: Check new implementation
 function goFoward(e){
   chrome.tabs.getSelected(null, function(tab){
     chrome.tabs.executeScript(tab.id, {code: 'window.history.go(1);'})
@@ -260,10 +249,3 @@ function scrollUp(e){
     bkg.console.log("Scrolling up")
   });
 }
-
-// document.addEventListener('DOMContentLoaded', function() {
-//   document.getElementById("cmd_newtab").addEventListener('click', newTab);
-//   document.getElementById("cmd_refresh").addEventListener('click', refreshing);
-//   document.getElementById("cmd_removetab").addEventListener('click', removeTab);
-//   document.getElementById("cmd_goBack").addEventListener('click', goBack);
-// });
