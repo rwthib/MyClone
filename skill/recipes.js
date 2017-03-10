@@ -51,7 +51,14 @@ module.exports = {
         'open second link': 'opening second link',
         'open third link': 'opening third link',
         'open fourth link': 'opening fourth link',
-        'search near-by supermarkets': 'Here\'s what I found on google'
+        'search near-by supermarkets': 'Here\'s what I found on google',
+        'deselect links': 'restored',
+        'restore links': 'restored',
+        'undo': 'restored',
+        'restore': 'restored',
+        'deselect': 'restored',
+        'remove highlights': 'restored',
+        'remove highlighting': 'restored',
     }
 };
     

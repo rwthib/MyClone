@@ -70,6 +70,15 @@ socket.on('action', function (action) {
       case 'show options':
           highlightLinks();
           break;
+      case 'deselect links':
+      case 'restore links':
+      case 'deselect':
+      case 'undo':
+      case 'restore':
+      case 'remove highlights':
+      case 'remove highlighting':
+          deselectLinks();
+          break;
       case 'search near-by supermarkets':
           loadPage('https://www.google.com/search?q=nearby+supermarkets&oq=nearby+supermarkets');
           break;
@@ -139,6 +148,14 @@ function highlightLinks() {
   //   i++;
   // }
 
+}
+
+function deselectLinks() {
+  chrome.tabs.getSelected(null, function(tab){
+    chrome.tabs.executeScript(tab.id, {
+      code: "var stylesheets = document.styleSheets;for(var i = 0; i < stylesheets.length; i++) {if(stylesheets[i].title == 'highlights') {stylesheets[i].disabled=true;}}"
+    })
+  });
 }
 
 //TODO: unUpdated fires not once but on every tab update

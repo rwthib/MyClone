@@ -29,10 +29,11 @@ if(currentUrl.includes('google')) {
 
 
 
-    head = document.head || document.getElementsByTagName('head')[0],
-    style = document.createElement('style');
+head = document.head || document.getElementsByTagName('head')[0],
+style = document.createElement('style');
 
 style.type = 'text/css';
+style.title = 'highlights';
 if (style.styleSheet){
   style.styleSheet.cssText = css;
 } else {
