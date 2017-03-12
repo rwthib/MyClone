@@ -11,11 +11,11 @@ Chrome Control allows you to control your browser and navigate solely by voice, 
 - refreshing
 - simulate relevant button presses, such as enter or spacebar
 
-Short demo on youtube: https://www.youtube.com/watch?v=iCnNRsLW0ns
+A short demo on youtube: https://www.youtube.com/watch?v=8jgcFP1MyF0
 
 TODO: 
 - Include login by amazon account ID on plugin side, to match installed skills to installed plugins
 - Expand intents and sample utterances for better and more natural query recognition
 - Web dashboard for users to add their own preferred sites as shortcuts
 - Implement additional features such as opening favourites and filling in search boxes
-- Inject [Web Speech API](https://developers.google.com/web/updates/2013/01/Voice-Driven-Web-Apps-Introduction-to-the-Web-Speech-API) for filling in forms or search boxes () 
+- Inject [Web Speech API](https://developers.google.com/web/updates/2013/01/Voice-Driven-Web-Apps-Introduction-to-the-Web-Speech-API) for filling in forms or search boxes

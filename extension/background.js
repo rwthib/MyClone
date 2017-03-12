@@ -174,7 +174,7 @@ function startGoogleVoiceSearch(n) {
     // });
     setTimeout(()=>{
       chrome.tabs.executeScript(tab.id, {
-        code: 'console.log(\'voiceSearch script injected\');myFunc();function myFunc() {console.log(\'polling\');if (document.querySelector(\'[aria-label="Search by voice"]\')) {setTimeout(()=>{document.querySelector(\'[aria-label="Search by voice"]\').click();},200);console.log(\'found:\');console.log(document.querySelector(\'[aria-label="Search by voice"]\'));} else {;setTimeout(myFunc, 100);}}' 
+        code: 'console.log(\'voiceSearch script injected\');myFunc();function myFunc() {console.log(\'polling\');if (document.querySelector(\'[aria-label="Search by voice"]\')) {setTimeout(()=>{document.querySelector(\'[aria-label="Search by voice"]\').click();},1000);console.log(\'found:\');console.log(document.querySelector(\'[aria-label="Search by voice"]\'));} else {;setTimeout(myFunc, 100);}}' 
       }) 
     }, 1000);
   });
@@ -192,7 +192,7 @@ function openLink(n) {
 
   chrome.tabs.getSelected(null, function(tab){
     chrome.tabs.executeScript(tab.id, {
-      code: `var element = document.querySelector('[data-index="${n}"]');var link = window.location.href.includes('google') ? element.getElementsByTagName('a')[0] : element; console.log(link);window.location.href = link`
+      code: `var link = document.querySelector('[data-index="${n}"]'); console.log(link);window.location.href = link`
     }, function(results){ bkg.console.log(results); } )
   });
   // var i = 1;
