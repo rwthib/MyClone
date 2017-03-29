@@ -1,5 +1,5 @@
 var bkg = chrome.extension.getBackgroundPage();
-var socket = io('https://alexachrome.scalingo.io');
+var socket = io('<YOUR_SERVER_URL>'); //Replace this with your own server URL
 socket.on('connect', function(){
   bkg.console.log('connected');
 });
