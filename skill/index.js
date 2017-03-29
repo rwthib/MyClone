@@ -16,7 +16,8 @@ const request = require('request');
 const http = require('http');
 const baseUrl = '<YOUR_SERVER_URL>';      //Replace this with your own server URL
 
-const APP_ID = 'amzn1.ask.skill.f22034b7-53d6-4553-ae43-fc8f6963408c' // TODO replace with your app ID (OPTIONAL).
+
+const APP_ID = '<YOUR_APP_ID>'; // Replace with your app ID (OPTIONAL).
 
 const handlers = {
     // 'NewSession': function () {
