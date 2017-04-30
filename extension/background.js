@@ -1,5 +1,5 @@
 var bkg = chrome.extension.getBackgroundPage();
-var socket = io('<YOUR_SERVER_URL>'); //Replace this with your own server URL
+var socket = io('https://serene-harbor-37271.herokuapp.com/'); //TODO Replace this with your own server URL
 socket.on('connect', function(){
   bkg.console.log('connected');
 });

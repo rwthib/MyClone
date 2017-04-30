@@ -14,10 +14,9 @@ const Alexa = require('alexa-sdk');
 const actions = require('./recipes');
 const request = require('request');
 const http = require('http');
-const baseUrl = '<YOUR_SERVER_URL>';      //Replace this with your own server URL
+const baseUrl = 'serene-harbor-37271.herokuapp.com/';    //TODO Replace this with your own server URL
 
-
-const APP_ID = '<YOUR_APP_ID>'; // Replace with your app ID (OPTIONAL).
+const APP_ID = 'amzn1.ask.skill.f22034b7-53d6-4553-ae43-fc8f6963408c' //TODO replace with your app ID (OPTIONAL).
 
 const handlers = {
     // 'NewSession': function () {
@@ -30,7 +29,26 @@ const handlers = {
 
     // },
     'Unhandled': function () {
-        this.emit(':ask', 'ChromeControl started. Control your browser via actions like, search with google, navigate back, scroll down ... Now, what can I help you with.');
+        //if no amazon token, return a LinkAccount card
+        if (this.event.session.user.accessToken == undefined) {
+            this.emit(':tellWithLinkAccountCard', 'Welcome to Chrome Control. To start using this skill, please use the companion app to authenticate on Amazon');
+            return;
+        } else {
+            var amznProfileURL = 'https://api.amazon.com/user/profile?access_token=';
+            amznProfileURL += this.event.session.user.accessToken;
+            request(amznProfileURL, function(error, response, body) {
+                if (response.statusCode == 200) {
+                    var profile = JSON.parse(body);
+                    this.emit(':tell', "Hello, " + profile.name.split(" ")[0]);
+                } else {
+                    this.emit(':tell', "Hello, I can't connect to Amazon Profile Service right now, try again later");
+                }
+            });
+            this.emit(':ask', 'ChromeControl started. Control your browser via actions like, search with google, navigate back, scroll down ... Now, what can I help you with.');
+
+
+        }
+
     },
     'BrowserNavigator': function () {
         const itemSlot = this.event.request.intent.slots.Item;
