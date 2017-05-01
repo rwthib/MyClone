@@ -1,120 +1,126 @@
 var bkg = chrome.extension.getBackgroundPage();
 var socket = io('https://serene-harbor-37271.herokuapp.com/'); //TODO Replace this with your own server URL
-socket.on('connect', function(){
-  bkg.console.log('connected');
-});
-socket.on('action', function (action) {
-  bkg.console.log(action);
-  /* action can be one of: open facebook, scroll up, scroll down, navigate back, navigate forward, open <site name>, open <url>, search <phrase>*/
-  switch(action) {
-      case 'open facebook':
-      case 'load facebook':
-          loadPage('https://facebook.com');
-          break;
-      case 'open youtube':
-      case 'load youtube':
-          loadPage('https://youtube.com');
-          break;
-      case 'open google':
-      case 'search with google':
-      case 'load google':
-      case 'google':
-          startGoogleVoiceSearch();
-          break;
-      case 'open hacker news':
-      case 'load hacker news':
-          loadPage('https://news.ycombinator.com');
-          break;
-      case 'open twitter':
-      case 'load twitter':
-          loadPage('https://twitter.com');
-          break;
-      case 'show news':
-          loadPage('https://www.theguardian.com/');
-          break;
-      case 'scroll up':
-          scrollUp();
-          break;
-      case 'scroll down':
-          scrollDown();
-          break;
-      case 'press enter':
-          //TODO
-          break;
-      case 'press spacebar':
-          //TODO
-          break;
-      case 'refresh':
-      case 'refresh page':
-      case 'reload page':
-          refreshing();
-      case 'navigate back':
-      case 'go back':
-          goBack();
-          break;
-      case 'navigate forward':
-      case 'go forward':
-          goFoward();
-          break;
-      case 'open tab':
-      case 'new tab':
-          newTab();
-          break;
-      case 'close tab':
-          removeTab();
-          break;
-      case 'display links':
-      case 'highlight links':
-      case 'show links':
-      case 'display options':
-      case 'highlight options':
-      case 'show options':
-          highlightLinks();
-          break;
-      case 'deselect links':
-      case 'restore links':
-      case 'deselect':
-      case 'undo':
-      case 'restore':
-      case 'remove highlights':
-      case 'remove highlighting':
-          deselectLinks();
-          break;
-      case 'search near-by supermarkets':
-          loadPage('https://www.google.com/search?q=nearby+supermarkets&oq=nearby+supermarkets');
-          break;
-      case 'open 1st':
-      case 'open 2nd':
-      case 'open 2nd link':
-      case 'open second link':
-          openLink(1);
-          break;
-      case 'open 2nd':
-      case 'open second':      
-      case 'open 2nd link':
-      case 'open second link':
-          openLink(2);
-          break;
-      case 'open 3rd':
-      case 'open third':      
-      case 'open 3nd link':
-      case 'open third link':
-          openLink(3);
-          break;
-      case 'open 4th':
-      case 'open fourth':      
-      case 'open 4th link':
-      case 'open fourth link':
-          openLink(4);
-          break;
-      default:
-          if(action.includes('select link')) {
-            const linkNumber = action.substring(12);
-            openLink(linkNumber);
-          }
-  }
-});
 
+// Only start socket when login with Amazon is completed
+function startSocket(channel) {
+  socket.on('connect', function(){
+    bkg.console.log('connected');
+  });
+  socket.on('action', function (action) {
+    bkg.console.log(action);
+    /* action can be one of: open facebook, scroll up, scroll down, navigate back, navigate forward, open <site name>, open <url>, search <phrase>*/
+    switch(action) {
+        case 'open facebook':
+        case 'load facebook':
+            loadPage('https://facebook.com');
+            break;
+        case 'open youtube':
+        case 'load youtube':
+            loadPage('https://youtube.com');
+            break;
+        case 'open google':
+        case 'search with google':
+        case 'load google':
+        case 'google':
+            startGoogleVoiceSearch();
+            break;
+        case 'open hacker news':
+        case 'load hacker news':
+            loadPage('https://news.ycombinator.com');
+            break;
+        case 'open twitter':
+        case 'load twitter':
+            loadPage('https://twitter.com');
+            break;
+        case 'show news':
+            loadPage('https://www.theguardian.com/');
+            break;
+        case 'scroll up':
+            scrollUp();
+            break;
+        case 'scroll down':
+            scrollDown();
+            break;
+        case 'press enter':
+            //TODO
+            break;
+        case 'press spacebar':
+            //TODO
+            break;
+        case 'refresh':
+        case 'refresh page':
+        case 'reload page':
+            refreshing();
+        case 'navigate back':
+        case 'go back':
+            goBack();
+            break;
+        case 'navigate forward':
+        case 'go forward':
+            goFoward();
+            break;
+        case 'open tab':
+        case 'new tab':
+            newTab();
+            break;
+        case 'close tab':
+            removeTab();
+            break;
+        case 'display links':
+        case 'highlight links':
+        case 'show links':
+        case 'display options':
+        case 'highlight options':
+        case 'show options':
+            highlightLinks();
+            break;
+        case 'deselect links':
+        case 'restore links':
+        case 'deselect':
+        case 'undo':
+        case 'restore':
+        case 'remove highlights':
+        case 'remove highlighting':
+            deselectLinks();
+            break;
+        case 'search near-by supermarkets':
+            loadPage('https://www.google.com/search?q=nearby+supermarkets&oq=nearby+supermarkets');
+            break;
+        case 'open 1st':
+        case 'open 2nd':
+        case 'open 2nd link':
+        case 'open second link':
+            openLink(1);
+            break;
+        case 'open 2nd':
+        case 'open second':      
+        case 'open 2nd link':
+        case 'open second link':
+            openLink(2);
+            break;
+        case 'open 3rd':
+        case 'open third':      
+        case 'open 3nd link':
+        case 'open third link':
+            openLink(3);
+            break;
+        case 'open 4th':
+        case 'open fourth':      
+        case 'open 4th link':
+        case 'open fourth link':
+            openLink(4);
+            break;
+        default:
+            if(action.includes('select link')) {
+              const linkNumber = action.substring(12);
+              openLink(linkNumber);
+            }
+    }
+  });
+  var text = "alert('started socket listening for " + channel + "');";
+  chrome.tabs.executeScript({code: text})
+
+}
 
 
 function newTab(e) {
@@ -249,17 +255,15 @@ function scrollUp(e){
     bkg.console.log("Scrolling up")
   });
 }
-
-
-// chrome.runtime.onMessageExternal.addListener(
-//   function(request, sender, sendResponse) {
-//     console.log(sender.url)
-//     if (sender.url == blacklistedWebsite)
-//       return;  // don't allow this web page access
-//     if (request.openUrlInEditor)
-//       openUrl(request.openUrlInEditor);
-//       console.log('third')
-// });
+  
+chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
+  // Save it using the Chrome extension storage API.
+  chrome.storage.sync.set({'mail': message}, function() {
+    // Notify that we saved.
+    chrome.tabs.executeScript({code: "alert('mail saved')"})
+    startSocket(message);
+  });
+});
 
 // Check whether new version is installed
 chrome.runtime.onInstalled.addListener(function(details){

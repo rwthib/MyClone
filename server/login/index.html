@@ -35,7 +35,7 @@
       <p>This extension works together with the Alexa ChromeControl skill, which you can find in the <a href='https://www.amazon.com/b?ie=UTF8&node=13727921011'>Amazon Alexa Marketplace</a>. To sync your installed skill with this extension, use the Login with Amazon button below.</p>
 <!--       <input type="text" placeholder="Username"/>
       <input type="password" placeholder="Password"/> -->
-      <button id="test">Login</button>
+      <!-- <button id="test">Login</button> -->
       <a href="#" id="LoginWithAmazon">
         <img border="0" alt="Login with Amazon"
           src="https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_156x32.png"
@@ -123,32 +123,11 @@
               // alert('Your unique ID is ' + response.profile.CustomerId);
 
               // Communicate message to content script
-              // window.postMessage({ type: "FROM_PAGE", text: 'response.profile.PrimaryEmail' }, "*");
-              // The ID of the extension we want to talk to.
-
-              /*
-              var editorExtensionId = "mpdflhaiemlkcjhafmmonoaebghhmlcg";   //TODO: Replace after uploaded extension
-
-              // Make a simple request:
-              chrome.runtime.sendMessage(editorExtensionId, {openUrlInEditor: url},
-                function(response) {
-                  if (!response.success)
-                    handleError(url);
-              });
-              */
-
-              document.getElementById("test").addEventListener("click",
-                  function() {
-                console.log("1");
-                window.postMessage({ type: "FROM_PAGE", text: "Hello from the webpage!" }, "*");
-              }, false);
-
-
-
-
+              var event = new CustomEvent('mail', { 'detail': response.profile.PrimaryEmail});
+              document.dispatchEvent(event);
 
               // Switches the Icon
-              $(this).children('i').toggleClass('fa-pencil');
+              // $(this).children('i').toggleClass('fa-pencil');
               // Switches the forms  
               $('.form').animate({
                 height: "toggle",
@@ -165,8 +144,10 @@
    </script> 
 
 <!--    <script type="text/javascript">
-     document.getElementById('Logout').onclick = function() {
-       amazon.Login.logout();
+     document.getElementById('test').onclick = function() {
+       // amazon.Login.logout();
+       // var event = new CustomEvent('mail', { 'detail': response.profile.PrimaryEmail});
+       // document.dispatchEvent(event);
    };
    </script> -->
 
