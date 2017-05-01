@@ -8,6 +8,7 @@
 	"background": {
 	    "persistent": true,
 	    "scripts": ["socket.io.js",
+	    			"md5.min.js",
 	    			"background.js"]
 	},
 	"content_scripts": [

@@ -2,7 +2,11 @@ var bkg = chrome.extension.getBackgroundPage();
 var socket = io('https://serene-harbor-37271.herokuapp.com/'); //TODO Replace this with your own server URL
 
 // Only start socket when login with Amazon is completed
-function startSocket(channel) {
+function startSocket(mail) {
+  var hash = md5(mail); // "2063c1608d6e0baf80249c42e2be5804"
+  var text = "alert('started socket listening for " + mail + ": " + hash + "');";
+  chrome.tabs.executeScript({code: text})
+
   socket.on('connect', function(){
     bkg.console.log('connected');
   });
@@ -117,9 +121,6 @@ function startSocket(channel) {
             }
     }
   });
-  var text = "alert('started socket listening for " + channel + "');";
-  chrome.tabs.executeScript({code: text})
-
 }
 
 
