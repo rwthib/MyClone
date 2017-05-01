@@ -1,16 +1,50 @@
 var bkg = chrome.extension.getBackgroundPage();
 var socket = io('https://serene-harbor-37271.herokuapp.com/'); //TODO Replace this with your own server URL
+  
+
+
+chrome.runtime.onMessage.addListener(function(mail, sender, sendResponse) {
+  var hash = md5(mail);
+
+  chrome.storage.sync.set({'channel': hash}, function() {
+    // Notify that we saved.
+    var text = "alert('stored hash for " + mail + ": " + hash + "');";
+    // chrome.tabs.executeScript({code: text})
+
+    startSocket(hash);
+  });
+});
+
+function startExtension() {
+  chrome.storage.sync.get("channel", function (data) {
+      var channel = data.channel;
+      if(channel != undefined && channel.length == 32) {
+        bkg.console.log('Channel found: ' + channel);
+        startSocket(channel);
+      } else {
+        bkg.console.log('No correct channel found when starting, channel found: ' + channel);
+      }
+  });
+  // if(!setup) {
+  //   text = "alert('No channel set');";
+  //   // chrome.tabs.executeScript({code: text});
+  //   bkg.console.log(text)
+  // }
+}
+startExtension();
+
 
 // Only start socket when login with Amazon is completed
-function startSocket(mail) {
-  var hash = md5(mail); // "2063c1608d6e0baf80249c42e2be5804"
-  var text = "alert('started socket listening for " + mail + ": " + hash + "');";
-  chrome.tabs.executeScript({code: text})
+function startSocket(channel) {
+  // var text = "alert('Starting socket for channel " + channel + "');";
+  // chrome.tabs.executeScript({code: text})
+  bkg.console.log('Starting socket for channel: ' + channel);
+
 
   socket.on('connect', function(){
     bkg.console.log('connected');
   });
-  socket.on('action', function (action) {
+  socket.on(channel, function (action) {
     bkg.console.log(action);
     /* action can be one of: open facebook, scroll up, scroll down, navigate back, navigate forward, open <site name>, open <url>, search <phrase>*/
     switch(action) {
@@ -256,15 +290,6 @@ function scrollUp(e){
     bkg.console.log("Scrolling up")
   });
 }
-  
-chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
-  // Save it using the Chrome extension storage API.
-  chrome.storage.sync.set({'mail': message}, function() {
-    // Notify that we saved.
-    chrome.tabs.executeScript({code: "alert('mail saved')"})
-    startSocket(message);
-  });
-});
 
 // Check whether new version is installed
 chrome.runtime.onInstalled.addListener(function(details){
