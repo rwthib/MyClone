@@ -249,3 +249,20 @@ function scrollUp(e){
     bkg.console.log("Scrolling up")
   });
 }
+
+// Check whether new version is installed
+chrome.runtime.onInstalled.addListener(function(details){
+    chrome.tabs.create({url: "https://serene-harbor-37271.herokuapp.com/login"}, function (tab) {
+        console.log("Prompted user to login with Amazon");
+    });
+    if(details.reason == "install"){
+        console.log("This is a first install!");
+        // chrome.tabs.create({url: "https://serene-harbor-37271.herokuapp.com/login"}, function (tab) {
+        //     console.log("Prompted user to login with Amazon");
+        // });
+    }else if(details.reason == "update"){
+        var thisVersion = chrome.runtime.getManifest().version;
+        console.log("Updated from " + details.previousVersion + " to " + thisVersion + "!");
+    }
+});
+

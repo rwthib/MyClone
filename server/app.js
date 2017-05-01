@@ -12,6 +12,8 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use('/css',express.static(path.join(__dirname, 'login/css')));
+
 io.on("connection", socket => {
   console.log("new connection from "+socket.id);
 });
@@ -19,6 +21,18 @@ io.on("connection", socket => {
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
+});
+
+
+
+app.get("/login", (req, res) => {
+  res.sendFile(path.join(__dirname, "login/index.html"));
+  console.log("Login page accessed");
+});
+
+app.get("/privacy", (req, res) => {
+  res.sendFile(path.join(__dirname, "privacy.html"));
+  console.log("Privacy policy accessed");
 });
 
 app.post("/action", (req, res) => {
