@@ -35,7 +35,7 @@
       <p>This extension works together with the Alexa ChromeControl skill, which you can find in the <a href='https://www.amazon.com/b?ie=UTF8&node=13727921011'>Amazon Alexa Marketplace</a>. To sync your installed skill with this extension, use the Login with Amazon button below.</p>
 <!--       <input type="text" placeholder="Username"/>
       <input type="password" placeholder="Password"/> -->
-      <!-- <button>Login</button> -->
+      <button id="test">Login</button>
       <a href="#" id="LoginWithAmazon">
         <img border="0" alt="Login with Amazon"
           src="https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_156x32.png"
@@ -116,24 +116,49 @@
            return;
            }
            amazon.Login.retrieveProfile(response.access_token, function(response) {
-               var welcome = "Welcome, " + response.profile.Name + "!"; 
-               document.getElementById("loginName").innerHTML=welcome; 
-               // alert('Hello, ' + response.profile.Name);
-               // alert('Your e-mail address is ' + response.profile.PrimaryEmail);
-               // alert('Your unique ID is ' + response.profile.CustomerId);
+              var welcome = "Welcome, " + response.profile.Name + "!"; 
+              document.getElementById("loginName").innerHTML=welcome; 
+              // alert('Hello, ' + response.profile.Name);
+              // alert('Your e-mail address is ' + response.profile.PrimaryEmail);
+              // alert('Your unique ID is ' + response.profile.CustomerId);
 
-               // Switches the Icon
-               $(this).children('i').toggleClass('fa-pencil');
-               // Switches the forms  
-               $('.form').animate({
-                 height: "toggle",
-                 'padding-top': 'toggle',
-                 'padding-bottom': 'toggle',
-                 opacity: "toggle"
-               }, "slow");
+              // Communicate message to content script
+              // window.postMessage({ type: "FROM_PAGE", text: 'response.profile.PrimaryEmail' }, "*");
+              // The ID of the extension we want to talk to.
 
-               if ( window.console && window.console.log )
-                  window.console.log(response);
+              /*
+              var editorExtensionId = "mpdflhaiemlkcjhafmmonoaebghhmlcg";   //TODO: Replace after uploaded extension
+
+              // Make a simple request:
+              chrome.runtime.sendMessage(editorExtensionId, {openUrlInEditor: url},
+                function(response) {
+                  if (!response.success)
+                    handleError(url);
+              });
+              */
+
+              document.getElementById("test").addEventListener("click",
+                  function() {
+                console.log("1");
+                window.postMessage({ type: "FROM_PAGE", text: "Hello from the webpage!" }, "*");
+              }, false);
+
+
+
+
+
+              // Switches the Icon
+              $(this).children('i').toggleClass('fa-pencil');
+              // Switches the forms  
+              $('.form').animate({
+                height: "toggle",
+                'padding-top': 'toggle',
+                'padding-bottom': 'toggle',
+                opacity: "toggle"
+              }, "slow");
+
+              if ( window.console && window.console.log )
+                window.console.log(response);
            });
        });
      };

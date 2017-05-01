@@ -1,7 +1,7 @@
 /* eslint-disable  func-names */
 /* eslint quote-props: ["error", "consistent"]*/
 module.exports = {
-    ACTIONS_EN_GB: {
+    ACTIONS_EN: {
         'navigate back': 'navigating back',
         'navigate forward': 'navigating forward',
         'go forward': 'navigating forward',

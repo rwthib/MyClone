@@ -162,7 +162,7 @@ const handlers = {
 const languageStrings = {
     'en': {
         translation: {
-            ACTIONS: actions.ACTIONS_EN_GB,
+            ACTIONS: actions.ACTIONS_EN,
             SKILL_NAME: 'Browser Navigator',
             WELCOME_MESSAGE: "Welcome to %s.",
             REPROMPT_AGAIN: "Can I help you with something else?",

@@ -46,6 +46,7 @@ For a more detailed view of all allowed commands and variations in wording for t
 
 - Include login by amazon account ID on plugin side, to match installed skills to installed plugins and enable a single server to manage communications for all users
 - Optionally use AWS IoT Pub/Sub service for all Lambda / Extension communication, which would allow removal of the server and replace socket&#46;&#8203;io with [MQTT](https://github.com/jimmyn/aws-mqtt-client)
+- End-to-end feedback of failing actions
 - Inject [Web Speech API](https://developers.google.com/web/updates/2013/01/Voice-Driven-Web-Apps-Introduction-to-the-Web-Speech-API) for filling in forms or search boxes
 - Expand intents and sample utterances for better and more natural query recognition
 - Web dashboard for users to add their own preferred sites as shortcuts

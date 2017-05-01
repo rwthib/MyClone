@@ -9,7 +9,17 @@
 	    "persistent": true,
 	    "scripts": ["socket.io.js",
 	    			"background.js"]
-	  },
+	},
+	"content_scripts": [
+	    {
+	      "matches": ["https://serene-harbor-37271.herokuapp.com/login"],
+	      "run_at": "document_start",
+	      "js": ["setup.js"]
+	    }
+	],
+	"externally_connectable": {
+	  "matches": ["https://serene-harbor-37271.herokuapp.com/*"]
+	},
 	"browser_action":{
 		"default_title" : "Hi, Alexa!",
 		"default_icon": "icon.png",

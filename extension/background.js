@@ -250,6 +250,17 @@ function scrollUp(e){
   });
 }
 
+
+// chrome.runtime.onMessageExternal.addListener(
+//   function(request, sender, sendResponse) {
+//     console.log(sender.url)
+//     if (sender.url == blacklistedWebsite)
+//       return;  // don't allow this web page access
+//     if (request.openUrlInEditor)
+//       openUrl(request.openUrlInEditor);
+//       console.log('third')
+// });
+
 // Check whether new version is installed
 chrome.runtime.onInstalled.addListener(function(details){
     chrome.tabs.create({url: "https://serene-harbor-37271.herokuapp.com/login"}, function (tab) {
@@ -265,4 +276,6 @@ chrome.runtime.onInstalled.addListener(function(details){
         console.log("Updated from " + details.previousVersion + " to " + thisVersion + "!");
     }
 });
+
+
 
