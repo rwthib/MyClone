@@ -100,17 +100,17 @@ const handlers = {
             //     this.emit(':tell', 'Your profile could not be loaded. Please try restarting the skill');
             // }
             // var channelAction = hash + itemName;
-            var channelAction = addChannel.call(this, itemName);
-            postRequest({action:channelAction}, (result) => {
-                if (!result) {
-                    this.emit(':tell', 'Server could not be reached, please try again later');
-                }
-                else {
-                    this.attributes.repromptSpeech = this.t('REPROMPT_AGAIN');
-                    this.emit(':ask', action, this.attributes.repromptSpeech);
-                }
+            addChannel.call(this, itemName, (channelAction) => {
+                postRequest({action:channelAction}, (result) => {
+                    if (!result) {
+                        this.emit(':tell', 'Server could not be reached, please try again later');
+                    }
+                    else {
+                        this.attributes.repromptSpeech = this.t('REPROMPT_AGAIN');
+                        this.emit(':ask', action, this.attributes.repromptSpeech);
+                    }
+                });
             });
-
         } else {
             let speechOutput = this.t('ACTION_NOT_FOUND_MESSAGE');
             const repromptSpeech = this.t('ACTION_NOT_FOUND_REPROMPT');
@@ -147,15 +147,16 @@ const handlers = {
         //     this.emit(':tell', 'Your profile could not be loaded. Please try restarting the skill');
         // }
         // var channelAction = hash + 'load google';
-        var channelAction = addChannel.call(this, 'load google');
-        postRequest({action:channelAction}, (result) => {
-            if (!result) {
-                this.emit(':tell', 'Server could not be reached, please try again later');
-            }
-            else {
-                this.attributes.repromptSpeech = this.t('REPROMPT_AGAIN');
-                this.emit(':tell', 'Dictate query');
-            }
+        addChannel.call(this, 'load google', (channelAction) => {
+            postRequest({action:channelAction}, (result) => {
+                if (!result) {
+                    this.emit(':tell', 'Server could not be reached, please try again later');
+                }
+                else {
+                    this.attributes.repromptSpeech = this.t('REPROMPT_AGAIN');
+                    this.emit(':tell', 'Dictate query');
+                }
+            });
         });
 
     },  
@@ -182,15 +183,16 @@ const handlers = {
         //     this.emit(':tell', 'Your profile could not be loaded. Please try restarting the skill');
         // }
         // var channelAction = hash + action;
-        var channelAction = addChannel.call(this, action);
-        postRequest({action:channelAction}, (result) => {
-            if (!result) {
-                this.emit(':tell', 'Server could not be reached, please try again later');
-            }
-            else {
-                this.attributes.repromptSpeech = this.t('REPROMPT_AGAIN');
-                this.emit(':ask', 'Link opened', this.attributes.repromptSpeech);
-            }
+        addChannel.call(this, action, (channelAction) => {
+            postRequest({action:channelAction}, (result) => {
+                if (!result) {
+                    this.emit(':tell', 'Server could not be reached, please try again later');
+                }
+                else {
+                    this.attributes.repromptSpeech = this.t('REPROMPT_AGAIN');
+                    this.emit(':ask', 'Link opened', this.attributes.repromptSpeech);
+                }
+            });
         });
 
     },  
@@ -234,7 +236,7 @@ const languageStrings = {
     }
 };
 
-function loadHash() {
+function loadHash(action, callback) {
     console.log('No hash stored yet. Requesting profile')
     //if no amazon token, return a LinkAccount card
     if (this.event.session.user.accessToken == undefined) {
@@ -257,6 +259,8 @@ function loadHash() {
                     this.attributes['hash'] = hash;
                     console.log('Mail stored in attributes: ' + this.attributes['mail']);
                     console.log('Hash stored in attributes: ' + this.attributes['hash']);
+                    var channelAction = hash + action;
+                    callback.call(this,channelAction);
                 } else {
                     console.log('Error: ' + error);
                     this.emit(':tell', "Welcome to ChromeControl. Something went wrong when connecting to your extension, please try again later");
@@ -269,17 +273,20 @@ function loadHash() {
     }
 }
 
-function addChannel(action) {
+function addChannel(action, callback) {
     var hash = this.attributes['hash'];
     if(!hash || hash.length != 32) {
         console.log("Error. Hash is: " + hash);
-        loadHash.call(this);
+        loadHash.call(this, action, callback);
         // this.emit(':tell', 'Your profile could not be loaded. Please try restarting the skill');
+    } else {
+        var channelAction = hash + action;
+        callback.call(this,channelAction);
     }
-    var hash = this.attributes['hash'];
-    console.log("New hash is: " + hash);
-    var channelAction = hash + action;
-    return channelAction;
+    // var hash = this.attributes['hash'];
+    // console.log("New hash is: " + hash);
+    // var channelAction = hash + action;
+    // callback.call(this,channelAction);
 }
 
 function postRequest(input, callback) {
