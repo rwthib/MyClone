@@ -30,6 +30,11 @@ app.get("/login", (req, res) => {
   console.log("Login page accessed");
 });
 
+app.get("/google83bdccd74b8e314e.html", (req, res) => {
+  res.sendFile(path.join(__dirname, "google83bdccd74b8e314e.html"));
+  console.log("Login page accessed");
+});
+
 app.get("/privacy", (req, res) => {
   res.sendFile(path.join(__dirname, "privacy.html"));
   console.log("Privacy policy accessed");

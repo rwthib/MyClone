@@ -1,8 +1,9 @@
 {
 	"manifest_version": 2,
 
-	"name":"Alexa ChromeControl",
-	"version":"1.0",
+	"name":"Alexa Chrome™Control",
+	"short_name": "Chrome™Control",
+	"version":"0.0.0.1",
 
 	"description" : "Control your Browser via Amazon Alexa",
 	"background": {
@@ -20,11 +21,6 @@
 	],
 	"externally_connectable": {
 	  "matches": ["https://serene-harbor-37271.herokuapp.com/*"]
-	},
-	"browser_action":{
-		"default_title" : "Hi, Alexa!",
-		"default_icon": "icons/icon128.png",
-		"default_popup":"popup.html"
 	},
 	"icons": { "16": "icons/icon16.png",
 	           "48": "icons/icon48.png",
