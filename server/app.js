@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const path = require("path");
+var md5 = require("blueimp-md5");
 const server = require("http").createServer(app);
 const io = require("socket.io")(server);
 
@@ -41,12 +42,16 @@ app.get("/privacy", (req, res) => {
 });
 
 app.post("/action", (req, res) => {
-  let action = req.body.action;
-  console.log("action received: "+ action);
-  if (action) { 
-    io.emit("action", action);
+  let total = req.body.action;
+  console.log("message received: " + total);
+  var hash = total.substring(0,32);
+  var action = total.substring(32);
+  console.log("hash: " + hash);
+  console.log("action: " + action);
+  if (action && action.length > 0) { 
+    io.emit(hash, action);
 
-    res.status(200).send("{\"message\": \"action '"+action+"' sent\" }");
+    res.status(200).send("{\"message\": \"action '" + action + "' sent\" }");
   }
   else {
     res.status(400).send("{\"message\": \"no action specified.\" }");

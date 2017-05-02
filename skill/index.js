@@ -12,7 +12,7 @@
 
 const Alexa = require('alexa-sdk');
 const actions = require('./recipes');
-const md5 = require('./md5.min.js');
+var md5 = require("blueimp-md5");
 const request = require('request');
 const http = require('http');
 const baseUrl = 'serene-harbor-37271.herokuapp.com';    //TODO Replace this with your own server URL
@@ -36,20 +36,41 @@ const handlers = {
             return;
         } else {
             var amznProfileURL = 'https://api.amazon.com/user/profile?access_token=';
+            console.log(amznProfileURL);
             amznProfileURL += this.event.session.user.accessToken;
-            request(amznProfileURL, function(error, response, body) {
-                if (response.statusCode == 200) {
-                    var profile = JSON.parse(body);
-                    console.log(profile.name);
-                    this.attributes.mail = profile.email;
-                    console.log(this.attributes.mail);
-                    this.emit(':tell', "Hello, " + profile.name.split(" ")[0]);
+            //  const self = this;  // <--- pointer to this in the outer function scope
+            //  request('http://rest_url...', function(error, response, body) {
+            //         if (response) { // we have a success so call the call back
+            //             self.emit(":tell", "hello"); //  <--- self points to the object you want
+            //         } else {
+            //             self.emit(':ask', 'hello');
+            //         }
+            // }
+
+            request(amznProfileURL, (error, response, body) => {
+                if (response) { // we have a success so call the call back
+                    // console.log(response);
+                    if (response.statusCode == 200) {
+                        var profile = JSON.parse(body);
+                        // console.log(profile.name);
+                        // console.log(profile.email);
+                        var hash = md5(profile.email);
+                        // console.log(hash);
+                        this.attributes['mail'] = profile.email;
+                        this.attributes['hash'] = hash;
+                        console.log('Mail stored in attributes: ' + this.attributes['mail']);
+                        console.log('Hash stored in attributes: ' + this.attributes['hash']);
+                        // this.emit(':tell', "Hello " + profile.name.split(" ")[0]);
+                        this.emit(':ask', 'ChromeControl started. Control your browser via actions like, search with google, navigate back, scroll down... Now, what can I help you with.');
+                    } else {
+                        console.log('Error: ' + error);
+                        this.emit(':tell', "Welcome to ChromeControl. Something went wrong when connecting to your extension, please try again later");
+                    } 
                 } else {
-                    this.emit(':tell', "Hello, I can't connect to Amazon Profile Service right now, try again later");
+                    console.log('Error. No response from Amazon Profile Service. Error: ' + error);
+                    this.emit(':tell', "Welcome to ChromeControl. Something went wrong when connecting to your extension, please try again later");
                 }
             });
-            this.emit(':ask', 'ChromeControl started. Control your browser via actions like, search with google, navigate back, scroll down ... Now, what can I help you with.');
-
 
         }
 
@@ -204,6 +225,10 @@ function postRequest(input, callback) {
         // this.emit(':tell', 'error during request');
         callback(false);
     });
+
+    // Prepend the MD5 hash to action, to help server determine to which channel to publish to
+    var content = this.attributes['hash'] + input;
+    console.log("Sending request for: " + content)
     req.write(JSON.stringify(input));
     req.end();
 } 

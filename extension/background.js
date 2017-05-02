@@ -1,7 +1,7 @@
 var bkg = chrome.extension.getBackgroundPage();
 var socket = io('https://serene-harbor-37271.herokuapp.com/'); //TODO Replace this with your own server URL
   
-
+ 
 // this is fired when a Login with Amazon popup on the setup page returns an email address
 chrome.runtime.onMessage.addListener(function(mail, sender, sendResponse) {  
   if(sender.url.includes("serene-harbor-37271")) {
@@ -12,7 +12,7 @@ chrome.runtime.onMessage.addListener(function(mail, sender, sendResponse) {
       // var text = "alert('stored hash for " + mail + ": " + hash + "');";
       // chrome.tabs.executeScript({code: text})
       startSocket(hash);
-      var text = "jQuery('.form').animate({height: 'toggle','padding-top': 'toggle','padding-bottom': 'toggle',opacity: 'toggle'}, 'slow');";
+      var text = "$('.form').animate({height: 'toggle','padding-top': 'toggle','padding-bottom': 'toggle',opacity: 'toggle'}, 'slow');";
       chrome.tabs.executeScript(null, { file: "jquery.min.js" }, function() {
         bkg.console.log('Login Successful. Identifier stored');
         chrome.tabs.executeScript({code: text});
