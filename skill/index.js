@@ -36,7 +36,6 @@ const handlers = {
             return;
         } else {
             var amznProfileURL = 'https://api.amazon.com/user/profile?access_token=';
-            console.log(amznProfileURL);
             amznProfileURL += this.event.session.user.accessToken;
 
             request(amznProfileURL, (error, response, body) => {
@@ -92,7 +91,7 @@ const handlers = {
             this.attributes.repromptSpeech = this.t('ACTION_REPEAT_MESSAGE');
             // this.emit(':askWithCard', action, this.attributes.repromptSpeech, cardTitle, action);
 
-            console.log("Value is: " + action);
+            // console.log("Value is: " + action);
             console.log("Key is: " + itemName);
             // console.log('getting hash from attributes');
             // var hash = this.attributes['hash'];
@@ -235,12 +234,50 @@ const languageStrings = {
     }
 };
 
+function loadHash() {
+    console.log('No hash stored yet. Requesting profile')
+    //if no amazon token, return a LinkAccount card
+    if (this.event.session.user.accessToken == undefined) {
+        this.emit(':tellWithLinkAccountCard', 'Welcome to Chrome Control. To start using this skill, please use the companion Alexa app to authenticate on Amazon');
+        return;
+    } else {
+        var amznProfileURL = 'https://api.amazon.com/user/profile?access_token=';
+        amznProfileURL += this.event.session.user.accessToken;
+
+        request(amznProfileURL, (error, response, body) => {
+            if (response) { // we have a success so call the call back
+                // console.log(response);
+                if (response.statusCode == 200) {
+                    var profile = JSON.parse(body);
+                    // console.log(profile.name);
+                    // console.log(profile.email);
+                    var hash = md5(profile.email);
+                    // console.log(hash);
+                    this.attributes['mail'] = profile.email;
+                    this.attributes['hash'] = hash;
+                    console.log('Mail stored in attributes: ' + this.attributes['mail']);
+                    console.log('Hash stored in attributes: ' + this.attributes['hash']);
+                } else {
+                    console.log('Error: ' + error);
+                    this.emit(':tell', "Welcome to ChromeControl. Something went wrong when connecting to your extension, please try again later");
+                } 
+            } else {
+                console.log('Error. No response from Amazon Profile Service. Error: ' + error);
+                this.emit(':tell', "Welcome to ChromeControl. Something went wrong when connecting to your extension, please try again later");
+            }
+        });
+    }
+}
+
 function addChannel(action) {
     var hash = this.attributes['hash'];
-    if(hash.length != 32) {
+    if(!hash || hash.length != 32) {
         console.log("Error. Hash is: " + hash);
-        this.emit(':tell', 'Your profile could not be loaded. Please try restarting the skill');
+        loadHash.call(this);
+        // this.emit(':tell', 'Your profile could not be loaded. Please try restarting the skill');
     }
+    var hash = this.attributes['hash'];
+    console.log("New hash is: " + hash);
     var channelAction = hash + action;
     return channelAction;
 }
