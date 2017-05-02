@@ -226,7 +226,7 @@ function startGoogleVoiceSearch(n) {
       chrome.tabs.executeScript(tab.id, {
         code: 'console.log(\'voiceSearch script injected\');myFunc();function myFunc() {console.log(\'polling\');if (document.querySelector(\'[aria-label="Search by voice"]\')) {setTimeout(()=>{document.querySelector(\'[aria-label="Search by voice"]\').click();},1000);console.log(\'found:\');console.log(document.querySelector(\'[aria-label="Search by voice"]\'));} else {;setTimeout(myFunc, 100);}}' 
       }) 
-    }, 1000);
+    }, 2000);
   });
 }
 

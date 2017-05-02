@@ -32,20 +32,12 @@ const handlers = {
     'Unhandled': function () {
         //if no amazon token, return a LinkAccount card
         if (this.event.session.user.accessToken == undefined) {
-            this.emit(':tellWithLinkAccountCard', 'Welcome to Chrome Control. To start using this skill, please use the companion app to authenticate on Amazon');
+            this.emit(':tellWithLinkAccountCard', 'Welcome to Chrome Control. To start using this skill, please use the companion Alexa app to authenticate on Amazon');
             return;
         } else {
             var amznProfileURL = 'https://api.amazon.com/user/profile?access_token=';
             console.log(amznProfileURL);
             amznProfileURL += this.event.session.user.accessToken;
-            //  const self = this;  // <--- pointer to this in the outer function scope
-            //  request('http://rest_url...', function(error, response, body) {
-            //         if (response) { // we have a success so call the call back
-            //             self.emit(":tell", "hello"); //  <--- self points to the object you want
-            //         } else {
-            //             self.emit(':ask', 'hello');
-            //         }
-            // }
 
             request(amznProfileURL, (error, response, body) => {
                 if (response) { // we have a success so call the call back
@@ -61,7 +53,14 @@ const handlers = {
                         console.log('Mail stored in attributes: ' + this.attributes['mail']);
                         console.log('Hash stored in attributes: ' + this.attributes['hash']);
                         // this.emit(':tell', "Hello " + profile.name.split(" ")[0]);
-                        this.emit(':ask', 'ChromeControl started. Control your browser via actions like, search with google, navigate back, scroll down... Now, what can I help you with.');
+                        // if(this.attributes['extension'] == true) {
+                        //     this.emit(':ask', 'ChromeControl. For a list of options, say, help.');
+                        // } else {
+                        //     var cardContent = "To start using the app, install the ChromeControl extension for your Chrome browser: https://chrome.google.com/webstore/detail/alexa-chromecontrol/jjjjekfmojknabiflakbmnmapkkmefbe . "
+                        //     this.emit(':askWithCard', 'ChromeControl. To start using this skill, install the Chrome Extension, ChromeControl. If you have already done this, confirm by saying, installed',);//Control your browser via actions like, search with google, navigate back, scroll down... Now, what can I help you with.');
+                        //     this.attributes['extension'] == true;
+                        // }
+                        this.emit(':ask', 'ChromeControl. For a list of options, say, help.');
                     } else {
                         console.log('Error: ' + error);
                         this.emit(':tell', "Welcome to ChromeControl. Something went wrong when connecting to your extension, please try again later");
@@ -149,6 +148,14 @@ const handlers = {
         });
 
     },  
+    'Help': function () {
+        const cardTitle = "ChromeControl - Help Info";
+        this.attributes.speechOutput = 'First install the Chrome extension called Alexa ChromeControl, then try saying, search with Google, highlight links, open link 3, scroll down, open facebook, or view the Alexa app for a complete list of options';
+        this.attributes.repromptSpeech = this.t('ACTION_REPEAT_MESSAGE');
+        var queries = "\n- Search with Google\n- Highlight links\n- Open link {number}\n- Remove highlighting\n- Navigate {back/forward}\n- Scroll {up/down}\n- Reload page\n- {Open/close} tab\n- Show news\n- Open {Youtube/Google/Facebook/Twitter/Hacker News}\n- Press {Spacebar/Enter}";
+        var cardContent = "To start using the app, install the Alexa Chrome™Control extension for your Chrome browser, which can be downloaded from the Chrome Web Store. \nAfter installing, try one of the following phrases:" + queries;
+        this.emit(':askWithCard',this.attributes.speechOutput, this.attributes.repromptSpeech, cardTitle, cardContent);
+    },
     'OpenLink': function () {
         const number = this.event.request.intent.slots.Number.value;
         console.log("Link to select is " + number);
