@@ -29,7 +29,7 @@ const handlers = {
     //     this.emit(':ask', this.attributes.speechOutput, this.attributes.repromptSpeech);
 
     // },
-    'Unhandled': function () {
+    'LaunchRequest': function () {
         //if no amazon token, return a LinkAccount card
         if (this.event.session.user.accessToken == undefined) {
             this.emit(':tellWithLinkAccountCard', 'Welcome to Chrome Control. To start using this skill, please use the companion Alexa app to authenticate on Amazon');
@@ -60,7 +60,7 @@ const handlers = {
                         //     this.emit(':askWithCard', 'ChromeControl. To start using this skill, install the Chrome Extension, ChromeControl. If you have already done this, confirm by saying, installed',);//Control your browser via actions like, search with google, navigate back, scroll down... Now, what can I help you with.');
                         //     this.attributes['extension'] == true;
                         // }
-                        this.emit(':ask', 'ChromeControl. For a list of options, say, help.');
+                        this.emit(':ask', 'ChromeControl started. For a list of options, say help.');
                     } else {
                         console.log('Error: ' + error);
                         this.emit(':tell', "Welcome to ChromeControl. Something went wrong when connecting to your extension, please try again later");
@@ -72,7 +72,9 @@ const handlers = {
             });
 
         }
-
+    },
+    'Unhandled': function () {
+        this.emit(':ask', 'Sorry, I didn\'t get that. For a list of options, say help');
     },
     'BrowserNavigator': function () {
         const itemSlot = this.event.request.intent.slots.Item;
@@ -93,11 +95,16 @@ const handlers = {
             console.log("Value is: " + action);
             console.log("Key is: " + itemName);
             // console.log('getting hash from attributes');
-            var hash = this.attributes['hash'];
-            var channelAction = hash + itemName;
-            postRequest({action:channelAction}, hash, (result) => {
+            // var hash = this.attributes['hash'];
+            // if(hash.length != 32) {
+            //     console.log("Error. Hash is: " + hash);
+            //     this.emit(':tell', 'Your profile could not be loaded. Please try restarting the skill');
+            // }
+            // var channelAction = hash + itemName;
+            var channelAction = addChannel.call(this, itemName);
+            postRequest({action:channelAction}, (result) => {
                 if (!result) {
-                    this.emit(':tell', 'error during request');
+                    this.emit(':tell', 'Server could not be reached, please try again later');
                 }
                 else {
                     this.attributes.repromptSpeech = this.t('REPROMPT_AGAIN');
@@ -135,15 +142,20 @@ const handlers = {
         this.attributes.repromptSpeech = this.t('ACTION_REPEAT_MESSAGE');
         // this.emit(':askWithCard', action, this.attributes.repromptSpeech, cardTitle, action);
         // console.log('getting hash from attributes');
-        var hash = this.attributes['hash'];
-        var channelAction = hash + 'load google';
-        postRequest({action:channelAction}, hash, (result) => {
+        // var hash = this.attributes['hash'];
+        // if(hash.length != 32) {
+        //     console.log("Error. Hash is: " + hash);
+        //     this.emit(':tell', 'Your profile could not be loaded. Please try restarting the skill');
+        // }
+        // var channelAction = hash + 'load google';
+        var channelAction = addChannel.call(this, 'load google');
+        postRequest({action:channelAction}, (result) => {
             if (!result) {
-                this.emit(':tell', 'error during request');
+                this.emit(':tell', 'Server could not be reached, please try again later');
             }
             else {
                 this.attributes.repromptSpeech = this.t('REPROMPT_AGAIN');
-                this.emit(':ask', 'Dictate query', this.attributes.repromptSpeech);
+                this.emit(':tell', 'Dictate query');
             }
         });
 
@@ -154,7 +166,7 @@ const handlers = {
         this.attributes.repromptSpeech = this.t('ACTION_REPEAT_MESSAGE');
         var queries = "\n- Search with Google\n- Highlight links\n- Open link {number}\n- Remove highlighting\n- Navigate {back/forward}\n- Scroll {up/down}\n- Reload page\n- {Open/close} tab\n- Show news\n- Open {Youtube/Google/Facebook/Twitter/Hacker News}\n- Press {Spacebar/Enter}";
         var cardContent = "To start using the app, install the Alexa Chrome™Control extension for your Chrome browser, which can be downloaded from the Chrome Web Store. \nAfter installing, try one of the following phrases:" + queries;
-        this.emit(':askWithCard',this.attributes.speechOutput, this.attributes.repromptSpeech, cardTitle, cardContent);
+        this.emit(':askWithCard', this.attributes.speechOutput, this.attributes.repromptSpeech, cardTitle, cardContent);
     },
     'OpenLink': function () {
         const number = this.event.request.intent.slots.Number.value;
@@ -165,13 +177,16 @@ const handlers = {
 
         this.attributes.speechOutput = `Selecting link ${number}`;
         this.attributes.repromptSpeech = this.t('ACTION_REPEAT_MESSAGE');
-        // this.emit(':askWithCard', action, this.attributes.repromptSpeech, cardTitle, action);
-        // console.log('getting hash from attributes');
-        var hash = this.attributes['hash'];
-        var channelAction = hash + action;
-        postRequest({action:channelAction}, hash, (result) => {
+        // var hash = this.attributes['hash'];
+        // if(hash.length != 32) {
+        //     console.log("Error. Hash is: " + hash);
+        //     this.emit(':tell', 'Your profile could not be loaded. Please try restarting the skill');
+        // }
+        // var channelAction = hash + action;
+        var channelAction = addChannel.call(this, action);
+        postRequest({action:channelAction}, (result) => {
             if (!result) {
-                this.emit(':tell', 'error during request');
+                this.emit(':tell', 'Server could not be reached, please try again later');
             }
             else {
                 this.attributes.repromptSpeech = this.t('REPROMPT_AGAIN');
@@ -220,7 +235,17 @@ const languageStrings = {
     }
 };
 
-function postRequest(input, hash, callback) {
+function addChannel(action) {
+    var hash = this.attributes['hash'];
+    if(hash.length != 32) {
+        console.log("Error. Hash is: " + hash);
+        this.emit(':tell', 'Your profile could not be loaded. Please try restarting the skill');
+    }
+    var channelAction = hash + action;
+    return channelAction;
+}
+
+function postRequest(input, callback) {
     
     var options = {
       host: baseUrl,
@@ -241,7 +266,6 @@ function postRequest(input, hash, callback) {
         callback(false);
     });
 
-    // Prepend the MD5 hash to action, to help server determine to which channel to publish to
     var content = JSON.stringify(input);
     console.log("Sending request for: " + content);
     req.write(content);
