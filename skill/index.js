@@ -12,6 +12,7 @@
 
 const Alexa = require('alexa-sdk');
 const actions = require('./recipes');
+const md5 = require('./md5.min.js');
 const request = require('request');
 const http = require('http');
 const baseUrl = 'serene-harbor-37271.herokuapp.com';    //TODO Replace this with your own server URL
@@ -39,6 +40,9 @@ const handlers = {
             request(amznProfileURL, function(error, response, body) {
                 if (response.statusCode == 200) {
                     var profile = JSON.parse(body);
+                    console.log(profile.name);
+                    this.attributes.mail = profile.email;
+                    console.log(this.attributes.mail);
                     this.emit(':tell', "Hello, " + profile.name.split(" ")[0]);
                 } else {
                     this.emit(':tell', "Hello, I can't connect to Amazon Profile Service right now, try again later");

@@ -3,13 +3,14 @@
 
 	"name":"Alexa Chrome™Control",
 	"short_name": "Chrome™Control",
-	"version":"0.0.0.1",
+	"version":"0.0.0.2",
 
 	"description" : "Control your Browser via Amazon Alexa",
 	"background": {
 	    "persistent": true,
 	    "scripts": ["socket.io.js",
 	    			"md5.min.js",
+	    			"jquery.min.js",
 	    			"background.js"]
 	},
 	"content_scripts": [

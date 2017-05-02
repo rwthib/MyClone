@@ -2,17 +2,23 @@ var bkg = chrome.extension.getBackgroundPage();
 var socket = io('https://serene-harbor-37271.herokuapp.com/'); //TODO Replace this with your own server URL
   
 
-
-chrome.runtime.onMessage.addListener(function(mail, sender, sendResponse) {
-  var hash = md5(mail);
-
-  chrome.storage.sync.set({'channel': hash}, function() {
-    // Notify that we saved.
-    var text = "alert('stored hash for " + mail + ": " + hash + "');";
-    // chrome.tabs.executeScript({code: text})
-
-    startSocket(hash);
-  });
+// this is fired when a Login with Amazon popup on the setup page returns an email address
+chrome.runtime.onMessage.addListener(function(mail, sender, sendResponse) {  
+  if(sender.url.includes("serene-harbor-37271")) {
+    bkg.console.log('Received mail id ' + mail + ' from ' + sender.url + '. Hashing and storing')
+    var hash = md5(mail);
+    chrome.storage.sync.set({'channel': hash}, function() {
+      // Notify that we saved.
+      // var text = "alert('stored hash for " + mail + ": " + hash + "');";
+      // chrome.tabs.executeScript({code: text})
+      startSocket(hash);
+      var text = "jQuery('.form').animate({height: 'toggle','padding-top': 'toggle','padding-bottom': 'toggle',opacity: 'toggle'}, 'slow');";
+      chrome.tabs.executeScript(null, { file: "jquery.min.js" }, function() {
+        bkg.console.log('Login Successful. Identifier stored');
+        chrome.tabs.executeScript({code: text});
+      });
+    });
+  }
 });
 
 function startExtension() {
@@ -21,6 +27,7 @@ function startExtension() {
       if(channel != undefined && channel.length == 32) {
         bkg.console.log('Channel found: ' + channel);
         startSocket(channel);
+
       } else {
         bkg.console.log('No correct channel found when starting, channel found: ' + channel);
       }
@@ -152,6 +159,8 @@ function startSocket(channel) {
             if(action.includes('select link')) {
               const linkNumber = action.substring(12);
               openLink(linkNumber);
+            } else {
+              //TODO: error handling
             }
     }
   });
