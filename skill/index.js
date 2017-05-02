@@ -93,8 +93,10 @@ const handlers = {
 
             console.log("Value is: " + action);
             console.log("Key is: " + itemName);
-
-            postRequest({action:itemName}, (result) => {
+            // console.log('getting hash from attributes');
+            var hash = this.attributes['hash'];
+            var channelAction = hash + itemName;
+            postRequest({action:channelAction}, hash, (result) => {
                 if (!result) {
                     this.emit(':tell', 'error during request');
                 }
@@ -133,7 +135,10 @@ const handlers = {
         this.attributes.speechOutput = 'Dictate query';
         this.attributes.repromptSpeech = this.t('ACTION_REPEAT_MESSAGE');
         // this.emit(':askWithCard', action, this.attributes.repromptSpeech, cardTitle, action);
-        postRequest({action:'load google'}, (result) => {
+        // console.log('getting hash from attributes');
+        var hash = this.attributes['hash'];
+        var channelAction = hash + 'load google';
+        postRequest({action:channelAction}, hash, (result) => {
             if (!result) {
                 this.emit(':tell', 'error during request');
             }
@@ -154,7 +159,10 @@ const handlers = {
         this.attributes.speechOutput = `Selecting link ${number}`;
         this.attributes.repromptSpeech = this.t('ACTION_REPEAT_MESSAGE');
         // this.emit(':askWithCard', action, this.attributes.repromptSpeech, cardTitle, action);
-        postRequest({action:action}, (result) => {
+        // console.log('getting hash from attributes');
+        var hash = this.attributes['hash'];
+        var channelAction = hash + action;
+        postRequest({action:channelAction}, hash, (result) => {
             if (!result) {
                 this.emit(':tell', 'error during request');
             }
@@ -205,7 +213,7 @@ const languageStrings = {
     }
 };
 
-function postRequest(input, callback) {
+function postRequest(input, hash, callback) {
     
     var options = {
       host: baseUrl,
@@ -227,9 +235,9 @@ function postRequest(input, callback) {
     });
 
     // Prepend the MD5 hash to action, to help server determine to which channel to publish to
-    var content = this.attributes['hash'] + input;
-    console.log("Sending request for: " + content)
-    req.write(JSON.stringify(input));
+    var content = JSON.stringify(input);
+    console.log("Sending request for: " + content);
+    req.write(content);
     req.end();
 } 
 
