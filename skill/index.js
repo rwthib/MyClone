@@ -32,7 +32,8 @@ const handlers = {
     'LaunchRequest': function () {
         //if no amazon token, return a LinkAccount card
         if (this.event.session.user.accessToken == undefined) {
-            this.emit(':tellWithLinkAccountCard', 'Welcome to Chrome Control. To start using this skill, please use the companion Alexa app to authenticate on Amazon');
+            console.log('No access token found for user');
+            this.emit(':tellWithLinkAccountCard', 'Welcome to Chrome Control. To start using this skill, please use the companion Alexa app to link your account');
             return;
         } else {
             var amznProfileURL = 'https://api.amazon.com/user/profile?access_token=';
@@ -240,7 +241,8 @@ function loadHash(action, callback) {
     console.log('No hash stored yet. Requesting profile')
     //if no amazon token, return a LinkAccount card
     if (this.event.session.user.accessToken == undefined) {
-        this.emit(':tellWithLinkAccountCard', 'Welcome to Chrome Control. To start using this skill, please use the companion Alexa app to authenticate on Amazon');
+        console.log('No access token found for user');
+        this.emit(':tellWithLinkAccountCard', 'Welcome to Chrome Control. To start using this skill, please use the companion Alexa app to link your account');
         return;
     } else {
         var amznProfileURL = 'https://api.amazon.com/user/profile?access_token=';
@@ -278,15 +280,10 @@ function addChannel(action, callback) {
     if(!hash || hash.length != 32) {
         console.log("Error. Hash is: " + hash);
         loadHash.call(this, action, callback);
-        // this.emit(':tell', 'Your profile could not be loaded. Please try restarting the skill');
     } else {
         var channelAction = hash + action;
         callback.call(this,channelAction);
     }
-    // var hash = this.attributes['hash'];
-    // console.log("New hash is: " + hash);
-    // var channelAction = hash + action;
-    // callback.call(this,channelAction);
 }
 
 function postRequest(input, callback) {

@@ -17,14 +17,17 @@ Chrome Control allows you to control your browser and navigate solely by voice, 
 
 ## Setup
 
+**UPDATE: Currently, an updated version including account linking is going through beta testing and skill certification. If you are just interested in trying out the skill, download the [Alexa Chrome™Control](https://chrome.google.com/webstore/detail/alexa-chromecontrol/jjjjekfmojknabiflakbmnmapkkmefbe) extension via the Chrome Web Store and contact me to receive an invitation link to try out the skill as Beta tester**
+
 To install the skill, follow the following steps:
-1. Deploy the server on any platform
-2. Update the 'baseUrl' constant of the index.js file in the skill directory to the base url via which your server is now reachable
-3. Update the 'socket' var of the background.js file in the extension directory to the base url via which your server is now reachable
-4. Install the chrome extension found in the extension folder as described in https://developer.chrome.com/extensions/getstarted#unpacked
-5. Create a new Skill for Alexa, and when configuring the Interaction Model use the settings stored in intentScheme.json, LIST_OF_ITEMS.txt, and sampleUtterances.txt from the skill directory to define the allowed voice interactions
-6. Configure and upload your skill via the AWS CLI as described in this link: https://developer.amazon.com/blogs/post/Tx1UE9W1NQ0GYII/publishing-your-skill-code-to-lambda-via-the-command-line-interface  and use the already included publish.sh to re-upload
-7. The setup should now be complete, and if the skill was uploaded correctly it has been automatically made available for usage on Alexa devices on which you are logged in with your Amazon account. Test the skill by asking 'Alexa, start ChromeControl'
+1. Deploy the server on any platform, and enable https
+2. Update all occurrences of the "serene-harbor-37271.herokuapp.com" URL to the baseUrl of your own server
+3. Install the chrome extension found in the extension folder as described in https://developer.chrome.com/extensions/getstarted#unpacked
+4. Create a new Skill for Alexa, and when configuring the Interaction Model use the settings stored in intentScheme.json, LIST_OF_ITEMS.txt, and sampleUtterances.txt from the skill directory to define the allowed voice interactions
+5. Configure and upload your skill via the AWS CLI as described in this link: https://developer.amazon.com/blogs/post/Tx1UE9W1NQ0GYII/publishing-your-skill-code-to-lambda-via-the-command-line-interface  and use the already included publish.sh to re-upload
+6. The setup should now be complete, and if the skill was uploaded correctly it has been automatically made available for usage on Alexa devices on which you are logged in with your Amazon account. Test the skill by asking 'Alexa, start ChromeControl'
+
+
 
 ## Sample Utterances
 For a more detailed view of all allowed commands and variations in wording for these commands, view the sampleUtterances.txt and recipes.js files in the skill directory. These files, combined with intentScheme.json and LIST_OF_ITEMS.txt, are used to define the [Interaction Model](https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/alexa-skills-kit-interaction-model-reference) for ChromeControl. Some currently recognized phrases are:
