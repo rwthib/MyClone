@@ -32,7 +32,8 @@ const handlers = {
     'LaunchRequest': function () {
         //if no amazon token, return a LinkAccount card
         if (this.event.session.user.accessToken == undefined) {
-            console.log('No access token found for user');
+            console.log('No access token found for user, logging request object:');
+            console.log(this.event);
             this.emit(':tellWithLinkAccountCard', 'Welcome to Chrome Control. To start using this skill, please use the companion Alexa app to link your account');
             return;
         } else {

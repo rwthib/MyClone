@@ -209,10 +209,10 @@ function deselectLinks() {
   });
 }
 
-//TODO: unUpdated fires not once but on every tab update
+//Added /ncr to avoid country-specific redirect, causing country-specific aria-labels
 function startGoogleVoiceSearch(n) {
   bkg.console.log('searching with google');
-  loadPage('https://google.com');
+  loadPage('https://google.com/ncr');
   chrome.tabs.getSelected(null, function(tab){
     // chrome.tabs.onUpdated.addListener(function(tab, info) {
     //     if (info.status == "complete") {
@@ -225,8 +225,7 @@ function startGoogleVoiceSearch(n) {
     setTimeout(()=>{
       chrome.tabs.executeScript(tab.id, {
         // code: 'console.log(\'voiceSearch script injected\');myFunc();function myFunc() {console.log(\'polling\');if (document.querySelector(\'[aria-label="Search by voice"]\')) {setTimeout(()=>{document.querySelector(\'[aria-label="Search by voice"]\').click();},1000);console.log(\'found:\');console.log(document.querySelector(\'[aria-label="Search by voice"]\'));} else {;setTimeout(myFunc, 100);}}' 
-        code: 'console.log(\'voiceSearch script injected\');myFunc();function myFunc() {console.log(\'polling\');if (document.querySelector(\'[aria-label="Search by voice"]\')) {setTimeout(()=>{document.querySelector(\'[aria-label="Search by voice"]\').click();},1000);console.log(\'found:\');console.log(document.querySelector(\'[aria-label="Search by voice"]\'));} else if (document.querySelector(\'[aria-label="Search by voice"]\')) {setTimeout(()=>{document.querySelector(\'[aria-label="Gesproken zoekopdracht"]\').click();},1000);console.log(\'found:\');console.log(document.querySelector(\'[aria-label="Gesproken zoekopdracht"]\'));} else {;setTimeout(myFunc, 100);}}' 
-
+        code: 'console.log(\'voiceSearch script injected\');myFunc(10);function myFunc(x) {if(x < 0){return;}console.log(\'polling \' + (x));if (document.querySelector(\'[aria-label="Search by voice"]\')) {setTimeout(()=>{document.querySelector(\'[aria-label="Search by voice"]\').click();},1000);console.log(\'found:\');console.log(document.querySelector(\'[aria-label="Search by voice"]\'));} else if (document.querySelector(\'[aria-label="Gesproken zoekopdracht"]\')) {setTimeout(()=>{document.querySelector(\'[aria-label="Gesproken zoekopdracht"]\').click();},1000);console.log(\'found:\');console.log(document.querySelector(\'[aria-label="Gesproken zoekopdracht"]\'));} else {;setTimeout(myFunc(x-1), 200);}}' 
       }) 
     }, 2000);
   });
