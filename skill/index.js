@@ -162,13 +162,16 @@ const handlers = {
         });
 
     },  
-    'Help': function () {
-        const cardTitle = "ChromeControl - Help Info";
-        this.attributes.speechOutput = 'First install the Chrome extension called Alexa ChromeControl, then try saying, search with Google, highlight links, open link 3, scroll down, open facebook, or view the Alexa app for a complete list of options';
-        this.attributes.repromptSpeech = this.t('ACTION_REPEAT_MESSAGE');
-        var queries = "\n- Search with Google\n- Highlight links\n- Open link {number}\n- Remove highlighting\n- Navigate {back/forward}\n- Scroll {up/down}\n- Reload page\n- {Open/close} tab\n- Show news\n- Open {Youtube/Google/Facebook/Twitter/Hacker News}\n- Press {Spacebar/Enter}";
-        var cardContent = "To start using the app, install the Alexa Chrome™Control extension for your Chrome browser, which can be downloaded from the Chrome Web Store. \nAfter installing, try one of the following phrases:" + queries;
-        this.emit(':askWithCard', this.attributes.speechOutput, this.attributes.repromptSpeech, cardTitle, cardContent);
+    // 'Help': function () {
+    //     const cardTitle = "ChromeControl - Help Info";
+    //     this.attributes.speechOutput = 'First install the Chrome extension called Alexa ChromeControl, then try saying, search with Google, highlight links, open link 3, scroll down, open facebook, or view the Alexa app for a complete list of options';
+    //     this.attributes.repromptSpeech = this.t('ACTION_REPEAT_MESSAGE');
+    //     var queries = "\n- Search with Google\n- Highlight links\n- Open link {number}\n- Remove highlighting\n- Navigate {back/forward}\n- Scroll {up/down}\n- Reload page\n- {Open/close} tab\n- Show news\n- Open {Youtube/Google/Facebook/Twitter/Hacker News}\n- Press {Spacebar/Enter}";
+    //     var cardContent = "To start using the app, install the Alexa Chrome™Control extension for your Chrome browser, which can be downloaded from the Chrome Web Store. \nAfter installing, try one of the following phrases:" + queries;
+    //     this.emit(':askWithCard', this.attributes.speechOutput, this.attributes.repromptSpeech, cardTitle, cardContent);
+    // },
+    'No': function () {
+        this.emit(':tell', this.t('STOP_MESSAGE'));
     },
     'OpenLink': function () {
         const number = this.event.request.intent.slots.Number.value;
@@ -199,9 +202,16 @@ const handlers = {
 
     },  
     'AMAZON.HelpIntent': function () {
-        this.attributes.speechOutput = this.t('HELP_MESSAGE');
-        this.attributes.repromptSpeech = this.t('HELP_REPROMT');
-        this.emit(':ask', this.attributes.speechOutput, this.attributes.repromptSpeech);
+        // this.attributes.speechOutput = this.t('HELP_MESSAGE');
+        // this.attributes.repromptSpeech = this.t('HELP_REPROMT');
+        // this.emit(':ask', this.attributes.speechOutput, this.attributes.repromptSpeech);
+
+        const cardTitle = "ChromeControl - Help Info";
+        this.attributes.speechOutput = 'First install the Chrome extension called Alexa ChromeControl, then try saying, search with Google, highlight links, open link 3, scroll down, open facebook, or view the Alexa app for a complete list of options';
+        this.attributes.repromptSpeech = this.t('ACTION_REPEAT_MESSAGE');
+        var queries = "\n- Search with Google\n- Highlight links\n- Open link {number}\n- Remove highlighting\n- Navigate {back/forward}\n- Scroll {up/down}\n- Reload page\n- {Open/close} tab\n- Show news\n- Open {Youtube/Google/Facebook/Twitter/Hacker News}\n- Press {Spacebar/Enter}";
+        var cardContent = "To start using the app, install the Alexa Chrome™Control extension for your Chrome browser, which can be downloaded from the Chrome Web Store. \nAfter installing, try one of the following phrases:" + queries;
+        this.emit(':askWithCard', this.attributes.speechOutput, this.attributes.repromptSpeech, cardTitle, cardContent);
     },
     'AMAZON.RepeatIntent': function () {
         this.emit(':ask', this.attributes.speechOutput, this.attributes.repromptSpeech);

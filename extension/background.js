@@ -78,7 +78,7 @@ function startSocket(channel) {
             loadPage('https://twitter.com');
             break;
         case 'show news':
-            loadPage('https://www.theguardian.com/');
+            showNews();
             break;
         case 'scroll up':
             scrollUp();
@@ -158,7 +158,13 @@ function startSocket(channel) {
         default:
             if(action.includes('select link')) {
               const linkNumber = action.substring(12);
-              openLink(linkNumber);
+              openSite(linkNumber);// openLink(linkNumber);                         //TODO: change back
+            } else if (action.includes('open favourite')){
+              const siteNumber = action.substring(15);
+              openSite(siteNumber);
+            } else if (action.includes('use input')){
+              const inputNumber = action.substring(10);
+              useInput(inputNumber);
             } else {
               //TODO: error handling
             }
@@ -166,6 +172,75 @@ function startSocket(channel) {
   });
 }
 
+function useInput(inputNumber) {
+    var input = 'input' + inputNumber; 
+    chrome.storage.sync.get(input, function (data, inputNumber) {
+        var input;
+        if(inputNumber == 1) {
+          input = data.input1;
+        } else if(inputNumber == 2) {
+          input = data.input2;
+        } else {
+          input = data.input3;
+        }
+        if(input != undefined) {
+          bkg.console.log('Entered input: ' + input);
+          
+        } else {
+          bkg.console.log('No input stored');
+          alert('No text stored for input ' + inputNumber + '. You can set this in the options page of the extension');
+        }
+    });
+}
+
+function highlightForms() {
+
+}
+
+function selectForm() {
+
+}
+
+
+
+function submitForm() {
+  document.forms[0].submit();
+}
+
+function openSite(siteNumber) {
+    var site = 'site' + siteNumber; 
+    bkg.console.log(site);
+    chrome.storage.sync.get(site, function (data, siteNumber) {
+        bkg.console.log(data);
+        var url = data[site];
+        bkg.console.log(url);
+        if(url != undefined) {
+          bkg.console.log('Favourite site found: ' + url);
+          if (!/^https?:\/\//i.test(url)) {
+              url = 'http://' + url;
+          }
+          loadPage(url);
+        } else {
+          bkg.console.log('No favourite site stored');
+          alert('No site stored for favourite ' + siteNumber + '. You can set this in the options page of the extension');
+        }
+    });
+}
+
+function showNews() {
+    chrome.storage.sync.get('news', function (data) {
+        url = data.news;
+        if(url != undefined) {
+          if (!/^https?:\/\//i.test(url)) {
+              url = 'http://' + url;
+          }
+          loadPage(url);
+        } else {
+          bkg.console.log('No news site found');
+          alert('You have not yet stored your default news site. You can set this in the options page of the extension');
+        }
+    });
+}
 
 function newTab(e) {
   chrome.tabs.create({});

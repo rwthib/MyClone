@@ -21,7 +21,9 @@ io.on("connection", socket => {
 
 
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  // res.send("Hello World!");
+  res.sendFile(path.join(__dirname, "index.html"));
+  console.log("Home page accessed");
 });
 
 
