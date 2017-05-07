@@ -48,7 +48,7 @@
   <div class="form">
     <h2 id="loginName">Login Successful!</h2>
     <form>
-      <p>If you have also installed the Alexa ChromeControl skill, you should now be good to go and you can close this tab.</p>
+      <p>If you have also installed the Alexa ChromeControl skill, you should now be good to go and you can close this tab, or visit the <a href="#" id="options">options page</a> to set your favourite sites</p>
 <!--       <input type="text" placeholder="Username"/>
       <input type="password" placeholder="Password"/>
       <input type="email" placeholder="Email Address"/>
@@ -107,6 +107,12 @@
          setTimeout(window.doLogin, 1);
          return false;
       };
+      document.getElementById("options").addEventListener("click", function(event){
+          event.preventDefault()
+          console.log('opening options page from server');
+          var event = new CustomEvent('options', { 'detail': 'options'});
+          document.dispatchEvent(event);
+      });
       window.doLogin = function() {
         options = {};
         options.scope = 'profile';
@@ -140,7 +146,7 @@
                 window.console.log(response);
            });
        });
-     };
+      };
    </script> 
 
 <!--    <script type="text/javascript">

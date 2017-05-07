@@ -3,21 +3,35 @@ var socket = io('https://serene-harbor-37271.herokuapp.com/'); //TODO Replace th
   
  
 // this is fired when a Login with Amazon popup on the setup page returns an email address
-chrome.runtime.onMessage.addListener(function(mail, sender, sendResponse) {  
+chrome.runtime.onMessage.addListener(function(data, sender, sendResponse) {  
+  bkg.console.log('received data: ' + data)
   if(sender.url.includes("serene-harbor-37271.herokuapp.com")) {
-    bkg.console.log('Received mail id ' + mail + ' from ' + sender.url + '. Hashing and storing')
-    var hash = md5(mail);
-    chrome.storage.sync.set({'channel': hash}, function() {
-      // Notify that we saved.
-      // var text = "alert('stored hash for " + mail + ": " + hash + "');";
-      // chrome.tabs.executeScript({code: text})
-      startSocket(hash);
-      var text = "$('.form').animate({height: 'toggle','padding-top': 'toggle','padding-bottom': 'toggle',opacity: 'toggle'}, 'slow');";
-      chrome.tabs.executeScript(null, { file: "jquery.min.js" }, function() {
-        bkg.console.log('Login Successful. Identifier stored');
-        chrome.tabs.executeScript({code: text});
+    if (data.indexOf("mail") == 0) {  //login request
+      var mail = data.substring(4);
+      bkg.console.log('Received mail id ' + mail + ' from ' + sender.url + '. Hashing and storing')
+      var hash = md5(mail);
+      chrome.storage.sync.set({'channel': hash}, function() {
+        // Notify that we saved.
+        // var text = "alert('stored hash for " + mail + ": " + hash + "');";
+        // chrome.tabs.executeScript({code: text})
+        startSocket(hash);
+        var text = "$('.form').animate({height: 'toggle','padding-top': 'toggle','padding-bottom': 'toggle',opacity: 'toggle'}, 'slow');";
+        chrome.tabs.executeScript(null, { file: "jquery.min.js" }, function() {
+          bkg.console.log('Login Successful. Identifier stored');
+          chrome.tabs.executeScript({code: text});
+        });
       });
-    });
+    } else if (data.indexOf("options") == 0) {  //options page request
+        bkg.console.log('opening options page from extension');
+        if (chrome.runtime.openOptionsPage) {
+          // New way to open options pages, if supported (Chrome 42+).
+          chrome.runtime.openOptionsPage();
+        } else {
+          // Reasonable fallback. TODO
+          // window.open(chrome.runtime.getURL('options.html'));
+        }
+    }
+    
   }
 });
 
@@ -85,12 +99,6 @@ function startSocket(channel) {
             break;
         case 'scroll down':
             scrollDown();
-            break;
-        case 'press enter':
-            //TODO
-            break;
-        case 'press spacebar':
-            //TODO
             break;
         case 'refresh':
         case 'refresh page':
@@ -165,8 +173,11 @@ function startSocket(channel) {
             } else if (action.includes('use input')){
               const inputNumber = action.substring(10);
               useInput(inputNumber);
+            } else if (action.includes('press ')){
+              const button = action.substring(6);
+              press(button);
             } else {
-              //TODO: error handling
+              //TODO
             }
     }
   });
@@ -197,11 +208,26 @@ function highlightForms() {
 
 }
 
+function press(button) {
+  switch(button) {
+    case 'enter':
+        press('enter');
+        break;
+    case 'spacebar':
+        press('spacebar');
+        break;
+    case 'tab':
+        press('tab');
+        break;
+    case 'backspace':
+        press('backspace');
+        break;
+  }
+}
+
 function selectForm() {
 
 }
-
-
 
 function submitForm() {
   document.forms[0].submit();

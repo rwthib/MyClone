@@ -23,6 +23,20 @@ body {
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3E1D6D', endColorstr='#092756',GradientType=1 );
 }
 
+a {
+  text-decoration: none;
+  color: #e09c36;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+a:visited {
+  text-decoration: none;
+  color: #bf8f47;
+}
+
 #LoginWithAmazon {
     margin: 20px 42px 10px 42px;
     display: inline-block;
