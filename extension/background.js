@@ -166,7 +166,7 @@ function startSocket(channel) {
         default:
             if(action.includes('select link')) {
               const linkNumber = action.substring(12);
-              openSite(linkNumber);// openLink(linkNumber);                         //TODO: change back
+              openLink(linkNumber);// openLink(linkNumber);                         //TODO: change back
             } else if (action.includes('open favourite')){
               const siteNumber = action.substring(15);
               openSite(siteNumber);
@@ -211,16 +211,16 @@ function highlightForms() {
 function press(button) {
   switch(button) {
     case 'enter':
-        press('enter');
+        //TODO
         break;
     case 'spacebar':
-        press('spacebar');
+        //TODO
         break;
     case 'tab':
-        press('tab');
+        //TODO
         break;
     case 'backspace':
-        press('backspace');
+        //TODO
         break;
   }
 }

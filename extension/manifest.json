@@ -1,9 +1,9 @@
 {
 	"manifest_version": 2,
 
-	"name":"Alexa Chrome™Control",
-	"short_name": "Chrome™Control",
-	"version":"0.0.0.3",
+	"name":"Alexa BrowserHelp",
+	"short_name": "BrowserHelp",
+	"version":"0.0.0.4",
 
 	"description" : "Control your Browser via Amazon Alexa",
 	"background": {

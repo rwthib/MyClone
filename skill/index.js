@@ -34,7 +34,7 @@ const handlers = {
         if (this.event.session.user.accessToken == undefined) {
             console.log('No access token found for user, logging request object:');
             console.log(this.event);
-            this.emit(':tellWithLinkAccountCard', 'Welcome to Chrome Control. To start using this skill, please use the companion Alexa app to link your account');
+            this.emit(':tellWithLinkAccountCard', 'Welcome to Browser Help. To start using this skill, please use the companion Alexa app to link your account');
             return;
         } else {
             var amznProfileURL = 'https://api.amazon.com/user/profile?access_token=';
@@ -55,20 +55,20 @@ const handlers = {
                         console.log('Hash stored in attributes: ' + this.attributes['hash']);
                         // this.emit(':tell', "Hello " + profile.name.split(" ")[0]);
                         // if(this.attributes['extension'] == true) {
-                        //     this.emit(':ask', 'ChromeControl. For a list of options, say, help.');
+                        //     this.emit(':ask', 'BrowserHelp. For a list of options, say, help.');
                         // } else {
-                        //     var cardContent = "To start using the app, install the ChromeControl extension for your Chrome browser: https://chrome.google.com/webstore/detail/alexa-chromecontrol/jjjjekfmojknabiflakbmnmapkkmefbe . "
-                        //     this.emit(':askWithCard', 'ChromeControl. To start using this skill, install the Chrome Extension, ChromeControl. If you have already done this, confirm by saying, installed',);//Control your browser via actions like, search with google, navigate back, scroll down... Now, what can I help you with.');
+                        //     var cardContent = "To start using the app, install the BrowserHelp extension for your Chrome browser: https://chrome.google.com/webstore/detail/alexa-BrowserHelp/jjjjekfmojknabiflakbmnmapkkmefbe . "
+                        //     this.emit(':askWithCard', 'BrowserHelp. To start using this skill, install the Chrome Extension, BrowserHelp. If you have already done this, confirm by saying, installed',);//Control your browser via actions like, search with google, navigate back, scroll down... Now, what can I help you with.');
                         //     this.attributes['extension'] == true;
                         // }
-                        this.emit(':ask', 'ChromeControl started. For a list of options, say help.');
+                        this.emit(':ask', 'Browser Help started. For a list of options, say help.');
                     } else {
                         console.log('Error: ' + error);
-                        this.emit(':tell', "Welcome to ChromeControl. Something went wrong when connecting to your extension, please try again later");
+                        this.emit(':tell', "Welcome to BrowserHelp. Something went wrong when connecting to your extension, please try again later");
                     } 
                 } else {
                     console.log('Error. No response from Amazon Profile Service. Error: ' + error);
-                    this.emit(':tell', "Welcome to ChromeControl. Something went wrong when connecting to your extension, please try again later");
+                    this.emit(':tell', "Welcome to BrowserHelp. Something went wrong when connecting to your extension, please try again later");
                 }
             });
 
@@ -163,8 +163,8 @@ const handlers = {
 
     },  
     // 'Help': function () {
-    //     const cardTitle = "ChromeControl - Help Info";
-    //     this.attributes.speechOutput = 'First install the Chrome extension called Alexa ChromeControl, then try saying, search with Google, highlight links, open link 3, scroll down, open facebook, or view the Alexa app for a complete list of options';
+    //     const cardTitle = "BrowserHelp - Help Info";
+    //     this.attributes.speechOutput = 'First install the Chrome extension called Alexa BrowserHelp, then try saying, search with Google, highlight links, open link 3, scroll down, open facebook, or view the Alexa app for a complete list of options';
     //     this.attributes.repromptSpeech = this.t('ACTION_REPEAT_MESSAGE');
     //     var queries = "\n- Search with Google\n- Highlight links\n- Open link {number}\n- Remove highlighting\n- Navigate {back/forward}\n- Scroll {up/down}\n- Reload page\n- {Open/close} tab\n- Show news\n- Open {Youtube/Google/Facebook/Twitter/Hacker News}\n- Press {Spacebar/Enter}";
     //     var cardContent = "To start using the app, install the Alexa Chrome™Control extension for your Chrome browser, which can be downloaded from the Chrome Web Store. \nAfter installing, try one of the following phrases:" + queries;
@@ -201,22 +201,51 @@ const handlers = {
         });
 
     },  
+    'OpenFavourite': function () {
+        const number = this.event.request.intent.slots.Number.value;
+        console.log("Favourite to select is " + number);
+        const action = `open favourite ${number}`;
+        const cardTitle = this.t('DISPLAY_CARD_TITLE', this.t('SKILL_NAME'), action);
+        const myActions = this.t('ACTIONS');
+
+        this.attributes.speechOutput = `Opening favourite ${number}`;
+        this.attributes.repromptSpeech = this.t('ACTION_REPEAT_MESSAGE');
+        // var hash = this.attributes['hash'];
+        // if(hash.length != 32) {
+        //     console.log("Error. Hash is: " + hash);
+        //     this.emit(':tell', 'Your profile could not be loaded. Please try restarting the skill');
+        // }
+        // var channelAction = hash + action;
+        addChannel.call(this, action, (channelAction) => {
+            postRequest({action:channelAction}, (result) => {
+                if (!result) {
+                    this.emit(':tell', 'Server could not be reached, please try again later');
+                }
+                else {
+                    this.attributes.repromptSpeech = this.t('REPROMPT_AGAIN');
+                    this.emit(':ask', 'Favourite opened', this.attributes.repromptSpeech);
+                }
+            });
+        });
+
+    },  
     'AMAZON.HelpIntent': function () {
         // this.attributes.speechOutput = this.t('HELP_MESSAGE');
         // this.attributes.repromptSpeech = this.t('HELP_REPROMT');
         // this.emit(':ask', this.attributes.speechOutput, this.attributes.repromptSpeech);
 
-        const cardTitle = "ChromeControl - Help Info";
-        this.attributes.speechOutput = 'First install the Chrome extension called Alexa ChromeControl, then try saying, search with Google, highlight links, open link 3, scroll down, open facebook, or view the Alexa app for a complete list of options';
+        const cardTitle = "BrowserHelp - Help Info";
+        this.attributes.speechOutput = 'First install the Chrome extension called Alexa BrowserHelp, then try saying, search with Google, highlight links, open link 3, scroll down, open facebook, or view the Alexa app for a complete list of options';
         this.attributes.repromptSpeech = this.t('ACTION_REPEAT_MESSAGE');
         var queries = "\n- Search with Google\n- Highlight links\n- Open link {number}\n- Remove highlighting\n- Navigate {back/forward}\n- Scroll {up/down}\n- Reload page\n- {Open/close} tab\n- Show news\n- Open {Youtube/Google/Facebook/Twitter/Hacker News}\n- Press {Spacebar/Enter}";
-        var cardContent = "To start using the app, install the Alexa Chrome™Control extension for your Chrome browser, which can be downloaded from the Chrome Web Store. \nAfter installing, try one of the following phrases:" + queries;
+        var cardContent = "To start using the app, install the Alexa BrowserHelp extension for your Chrome browser, which can be downloaded from the Chrome Web Store. \nAfter installing, try one of the following phrases:" + queries;
         this.emit(':askWithCard', this.attributes.speechOutput, this.attributes.repromptSpeech, cardTitle, cardContent);
     },
     'AMAZON.RepeatIntent': function () {
         this.emit(':ask', this.attributes.speechOutput, this.attributes.repromptSpeech);
     },
     'AMAZON.StopIntent': function () {
+        this.emit(':tell', this.t('STOP_MESSAGE'));
         this.emit('SessionEndedRequest');
     },
     'AMAZON.CancelIntent': function () {
@@ -253,7 +282,7 @@ function loadHash(action, callback) {
     //if no amazon token, return a LinkAccount card
     if (this.event.session.user.accessToken == undefined) {
         console.log('No access token found for user');
-        this.emit(':tellWithLinkAccountCard', 'Welcome to Chrome Control. To start using this skill, please use the companion Alexa app to link your account');
+        this.emit(':tellWithLinkAccountCard', 'Welcome to Browser Help. To start using this skill, please use the companion Alexa app to link your account');
         return;
     } else {
         var amznProfileURL = 'https://api.amazon.com/user/profile?access_token=';
@@ -276,11 +305,11 @@ function loadHash(action, callback) {
                     callback.call(this,channelAction);
                 } else {
                     console.log('Error: ' + error);
-                    this.emit(':tell', "Welcome to ChromeControl. Something went wrong when connecting to your extension, please try again later");
+                    this.emit(':tell', "Welcome to BrowserHelp. Something went wrong when connecting to your extension, please try again later");
                 } 
             } else {
                 console.log('Error. No response from Amazon Profile Service. Error: ' + error);
-                this.emit(':tell', "Welcome to ChromeControl. Something went wrong when connecting to your extension, please try again later");
+                this.emit(':tell', "Welcome to BrowserHelp. Something went wrong when connecting to your extension, please try again later");
             }
         });
     }
