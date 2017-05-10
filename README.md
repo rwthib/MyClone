@@ -2,6 +2,7 @@
 
 Chrome Control allows you to control your browser and navigate solely by voice, using Amazon Alexa (e.g. via one of your Echo devices). Developed during HackUPC in Barcelona, this POC consists of an Alexa skill, Chrome browser extension, and server that relays the skill's restful requests to the plugin over a websocket connection. Actions already implemented include:
 - google voice search
+- storing and opening personal favourites
 - tab history traversal
 - link highlighting
 - selecting and following any link on the page
@@ -12,12 +13,12 @@ Chrome Control allows you to control your browser and navigate solely by voice, 
 - simulate relevant button presses, such as enter or spacebar
 
 ## Demo
-[![Demo](https://github.com/Nedervino/Alexa-ChromeControl/blob/master/images/demo.png)](https://www.youtube.com/watch?v=8jgcFP1MyF0)
+[![Demo](https://github.com/Nedervino/Alexa-ChromeControl/blob/master/images/demo.png)](https://www.youtube.com/watch?v=zGn1Kkma1p4)
 
 
 ## Setup
 
-**UPDATE: Currently, an updated version including account linking is going through beta testing and skill certification. If you are just interested in trying out the skill, download the [Alexa Chrome™Control](https://chrome.google.com/webstore/detail/alexa-chromecontrol/jjjjekfmojknabiflakbmnmapkkmefbe) extension via the Chrome Web Store and contact me to receive an invitation link to try out the skill as Beta tester**
+**UPDATE: Currently, an updated version including account linking is going through beta testing and skill certification. If you are just interested in trying out the skill, download the [Alexa BrowserHelp](https://chrome.google.com/webstore/detail/alexa-browserhelp/jjjjekfmojknabiflakbmnmapkkmefbe) extension via the Chrome Web Store and contact me to receive an invitation link to try out the skill as Beta tester**
 
 To install the skill, follow the following steps:
 1. Deploy the server on any platform, and enable https
@@ -36,6 +37,7 @@ For a more detailed view of all allowed commands and variations in wording for t
 - Highlight links
 - Open link {number}
 - Remove highlighting
+- Open favourite {1/2/3}
 - Navigate {back/forward}
 - Scroll {up/down}
 - Reload page
@@ -47,7 +49,6 @@ For a more detailed view of all allowed commands and variations in wording for t
 
 ## Future Goals / TODO
 
-- Include login by amazon account ID on plugin side, to match installed skills to installed plugins and enable a single server to manage communications for all users
 - Optionally use AWS IoT Pub/Sub service for all Lambda / Extension communication, which would allow removal of the server and replace socket&#46;&#8203;io with [MQTT](https://github.com/jimmyn/aws-mqtt-client)
 - End-to-end feedback of failing actions
 - Inject [Web Speech API](https://developers.google.com/web/updates/2013/01/Voice-Driven-Web-Apps-Introduction-to-the-Web-Speech-API) for filling in forms or search boxes

@@ -52,13 +52,13 @@ function restore_options() {
     'input2',
     'input3'
   ], function(items) {
-      document.getElementById('site1').value = items.site1;
-      document.getElementById('site2').value = items.site2;
-      document.getElementById('site3').value = items.site3;
-      document.getElementById('news').value = items.news;
-      document.getElementById('input1').value = items.input1;
-      document.getElementById('input2').value = items.input2;
-      document.getElementById('input3').value = items.input3;
+      document.getElementById('site1').value = items.site1 ? items.site1 : "";
+      document.getElementById('site2').value = items.site2 ? items.site2 : "";
+      document.getElementById('site3').value = items.site3 ? items.site3 : "";
+      document.getElementById('news').value = items.news ? items.news : "";
+      document.getElementById('input1').value = items.input1 ? items.input1 : "";
+      document.getElementById('input2').value = items.input2 ? items.input2 : "";
+      document.getElementById('input3').value = items.input3 ? items.input3 : "";
   });
 }
 document.addEventListener('DOMContentLoaded', restore_options);

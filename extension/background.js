@@ -92,6 +92,8 @@ function startSocket(channel) {
             loadPage('https://twitter.com');
             break;
         case 'show news':
+        case 'open news':
+        case 'load news':
             showNews();
             break;
         case 'scroll up':
@@ -326,7 +328,7 @@ function startGoogleVoiceSearch(n) {
     setTimeout(()=>{
       chrome.tabs.executeScript(tab.id, {
         // code: 'console.log(\'voiceSearch script injected\');myFunc();function myFunc() {console.log(\'polling\');if (document.querySelector(\'[aria-label="Search by voice"]\')) {setTimeout(()=>{document.querySelector(\'[aria-label="Search by voice"]\').click();},1000);console.log(\'found:\');console.log(document.querySelector(\'[aria-label="Search by voice"]\'));} else {;setTimeout(myFunc, 100);}}' 
-        code: 'console.log(\'voiceSearch script injected\');myFunc(10);function myFunc(x) {if(x < 0){return;}console.log(\'polling \' + (x));if (document.querySelector(\'[aria-label="Search by voice"]\')) {setTimeout(()=>{document.querySelector(\'[aria-label="Search by voice"]\').click();},1000);console.log(\'found:\');console.log(document.querySelector(\'[aria-label="Search by voice"]\'));} else if (document.querySelector(\'[aria-label="Gesproken zoekopdracht"]\')) {setTimeout(()=>{document.querySelector(\'[aria-label="Gesproken zoekopdracht"]\').click();},1000);console.log(\'found:\');console.log(document.querySelector(\'[aria-label="Gesproken zoekopdracht"]\'));} else {;setTimeout(myFunc(x-1), 200);}}' 
+        code: 'console.log(\'voiceSearch script injected\');myFunc(10);function myFunc(x) {if(x < 0){return;}console.log(\'polling \' + (x));if (document.querySelector(\'[aria-label="Search by voice"]\')) {setTimeout(()=>{document.querySelector(\'[aria-label="Search by voice"]\').click();},600);console.log(\'found:\');console.log(document.querySelector(\'[aria-label="Search by voice"]\'));} else if (document.querySelector(\'[aria-label="Gesproken zoekopdracht"]\')) {setTimeout(()=>{document.querySelector(\'[aria-label="Gesproken zoekopdracht"]\').click();},600);console.log(\'found:\');console.log(document.querySelector(\'[aria-label="Gesproken zoekopdracht"]\'));} else {;setTimeout(myFunc(x-1), 200);}}' 
       }) 
     }, 2000);
   });

@@ -245,7 +245,6 @@ const handlers = {
         this.emit(':ask', this.attributes.speechOutput, this.attributes.repromptSpeech);
     },
     'AMAZON.StopIntent': function () {
-        this.emit(':tell', this.t('STOP_MESSAGE'));
         this.emit('SessionEndedRequest');
     },
     'AMAZON.CancelIntent': function () {

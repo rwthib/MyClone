@@ -38,7 +38,7 @@ if(currentUrl.includes('google')) {
 	  // links[i].style.backgroundColor = "yellow";
 	}
 } else {
-	var css = "a {overflow:visible !important; z-index: 0;position: relative;}a:before {z-index: 1;display: inline-block;position: absolute;left: -2rem;bottom: 1.2rem;margin: 0 0.5rem 0 0;width: 1.5rem;height: 1.5rem;font-size: 0.9rem;line-height: 1.5rem;text-align: center;background-color: rgba(255, 255, 0, 0.5);border: solid 2px rgba(0, 0, 0, 0.5);content: attr(data-index);}";
+	var css = "a {overflow:visible !important; z-index: 0;position: relative;}a:before {z-index: 1;display: inline-block;position: absolute;left: 0rem;bottom: 0rem;margin: 0 0.5rem 0 0;width: 1.5rem;height: 1.5rem;font-size: 0.9rem;line-height: 1.5rem;text-align: center;background-color: rgba(255, 255, 0, 0.5);border: solid 2px rgba(0, 0, 0, 0.5);content: attr(data-index);}";
 	var i = 1;
 	var links = document.getElementsByTagName('a');
 	for(var i = 0; i< links.length; i++){
